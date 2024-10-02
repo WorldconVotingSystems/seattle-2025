@@ -46,11 +46,15 @@ COPY uv.lock /_lock/
 
 # Prepare a virtual environment.
 # This is cached until the Python version changes above.
+#
+# Note: This will not succeed if you are referencing nomnom's development version
+# unless you re-build the uv lock without sources and with prereleases.
 RUN --mount=type=cache,target=/root/.cache <<EOT
 cd /_lock
 uv sync \
     --frozen \
     --no-dev \
+    --no-sources \
     --no-install-project
 EOT
 
@@ -68,7 +72,7 @@ RUN --mount=type=cache,target=/root/.cache \
 
 # Copy in the Django stuff, too:
 RUN <<EOT
-rsync -av /src/manage.py /src/.env.dockertest /src/seattle_2025 /src/seattle_2025_app /app/
+rsync -av /src/manage.py /src/.env.dockertest /src/ /src/seattle_2025_app /app/
 EOT
 
 # Copy in the docker scripts
@@ -142,11 +146,12 @@ python -Im site
 find /app -not \( -path '*/.venv/*' -o -path '/app/lib/*' \)
 # set so that manage.py will be working
 dotenv-rust --file .env.dockertest python manage.py check
+rm .env.dockertest
 EOT
 
 # To develop _in_ this dockerfile:
 # build this image: docker build --target dev -t seattle-2025:dev .
-# run it: docker run --rm -it --env-file .env.docker --network seattle-2025_default --name nomnom-dev seattle-2025:dev
+# run it: docker run --rm -it --env-file .env --env-file .env.docker --network seattle-2025_default --name nomnom-dev seattle-2025:dev
 FROM run AS dev
 
 USER root

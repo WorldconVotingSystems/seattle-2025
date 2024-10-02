@@ -21,7 +21,7 @@ dev-dependencies = [
 ]
 
 [tool.ruff.lint.isort]
-known-first-party = ["seattle_2025"]
+known-first-party = ["seattle_2025", "seattle_2025_app"]
 
 [build-system]
 requires = ["hatchling"]
