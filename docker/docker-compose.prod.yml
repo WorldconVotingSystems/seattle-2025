@@ -1,0 +1,189 @@
+name: "nomnom"
+services:
+  boot:
+    image: ghcr.io/worldconvotingsystems/nomnom/seattle2025:${NOMNOM_VERSION:-main}
+    command: /app/docker/start.sh bootstrap
+    env_file:
+      - .env
+    environment:
+      NOM_STATIC_FILE_ROOT: /staticfiles
+    volumes:
+      - staticfiles:/staticfiles
+    depends_on:
+      db:
+        condition: service_healthy
+    links:
+      - db
+      - redis
+
+  nomnom:
+    image: ghcr.io/worldconvotingsystems/nomnom/seattle2025:${NOMNOM_VERSION:-main}
+    command: /app/docker/start.sh server
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8000:8000"
+    env_file:
+      - .env
+    environment:
+      NOM_STATIC_FILE_ROOT: /staticfiles
+      # prod has 4 cores; let's use 3 of them
+      WEB_CONCURRENCY: 3
+      # longer timeout so HTML reports can run
+      WEB_WORKER_TIMEOUT: 120
+    volumes:
+      - staticfiles:/staticfiles:ro
+    depends_on:
+      boot:
+        condition: service_completed_successfully
+    links:
+      - db
+      - redis
+    healthcheck:
+      start_period: 30s
+      start_interval: 2s
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      test:
+        [
+          "CMD",
+          "/bin/bash",
+          "-c",
+          "set -o pipefail; curl -s --fail -H 'Host: nominations.glasgow2024.org' http://localhost:8000/watchman/ | jq --exit-status '.databases[].default.ok == true' > /dev/null",
+        ]
+
+  redis:
+    image: redis:7.2.0
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "--raw", "incr", "_ping"]
+      interval: 30s
+      timeout: 60s
+      retries: 5
+      start_interval: 1s
+      start_period: 5s
+
+  db:
+    image: postgres:16
+    restart: unless-stopped
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    ports:
+      - "127.0.0.1:${NOM_DB_PORT}:5432"
+    environment:
+      - POSTGRES_DB=${NOM_DB_NAME}
+      - POSTGRES_USER=${NOM_DB_USER}
+      - POSTGRES_PASSWORD=${NOM_DB_PASSWORD}
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready",
+          "-d",
+          "$NOM_DB_NAME",
+          "-U",
+          "${NOM_DB_USER}",
+        ]
+      start_period: 80s
+      start_interval: 2s
+      interval: 30s
+      timeout: 60s
+      retries: 5
+
+  worker:
+    image: ghcr.io/worldconvotingsystems/nomnom/seattle2025:${NOMNOM_VERSION:-main}
+    command: /app/docker/start.sh worker
+    restart: unless-stopped
+    links:
+      - db
+      - redis
+    env_file:
+      - .env
+    environment:
+      NOM_STATIC_FILE_ROOT: /staticfiles
+    volumes:
+      - staticfiles:/staticfiles:ro
+    depends_on:
+      boot:
+        condition: service_completed_successfully
+
+  flower:
+    image: ghcr.io/worldconvotingsystems/nomnom/seattle2025:${NOMNOM_VERSION:-main}
+    command: /app/docker/start.sh flower
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:12344:5555"
+    links:
+      - db
+      - redis
+    env_file:
+      - .env
+    environment:
+      NOM_STATIC_FILE_ROOT: /staticfiles
+    volumes:
+      - staticfiles:/staticfiles:ro
+    depends_on:
+      boot:
+        condition: service_completed_successfully
+
+  beat:
+    image: ghcr.io/worldconvotingsystems/nomnom/seattle2025:${NOMNOM_VERSION:-main}
+    command: /app/docker/start.sh beat
+    restart: unless-stopped
+    links:
+      - db
+      - redis
+    env_file:
+      - .env
+    environment:
+      NOM_STATIC_FILE_ROOT: /staticfiles
+    volumes:
+      - staticfiles:/staticfiles:ro
+    depends_on:
+      boot:
+        condition: service_completed_successfully
+
+  # This container and Dozzle provide a logging endpoint access over my personal tailnet,
+  # so that I can view the container logs on this host without ssh as needed.
+  tailscale-sidecar:
+    hostname: nomnom-glasgow2024-prod
+    volumes:
+      - tailscale-data:/var/lib/tailscale
+    devices:
+      - /dev/net/tun
+    cap_add: # Required for tailscale to work
+      - net_admin
+      - sys_module
+    environment:
+      - TS_SERVE_PORT=8080
+    image: ghcr.io/offbyone/sidecar:main
+
+  dozzle:
+    container_name: dozzle
+    image: amir20/dozzle:latest
+    network_mode: "service:tailscale-sidecar"
+    restart: unless-stopped
+    environment:
+      DOZZLE_HOSTNAME: "nomnom-glasgow2024-staging"
+      DOZZLE_AUTH_PROVIDER: forward-proxy
+      DOZZLE_AUTH_HEADER_USER: "Tailscale-User-Login"
+      DOZZLE_AUTH_HEADER_NAME: "Tailscale-User-Name"
+      DOZZLE_ENABLE_ACTIONS: "false"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  promtail:
+    image: grafana/promtail:3.0.0
+    network_mode: "service:tailscale-sidecar"
+    restart: unless-stopped
+    volumes:
+      - /var/log:/var/log
+      - /opt/nomnom-g24/production/promtail:/mnt/config
+    command: -config.file=/mnt/config/promtail-config.yaml
+
+volumes:
+  db-data:
+    name: nomnom-data
+    external: true
+  staticfiles:
+  tailscale-data:

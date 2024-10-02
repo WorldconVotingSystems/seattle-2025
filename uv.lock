@@ -345,16 +345,16 @@ wheels = [
 
 [[package]]
 name = "django"
-version = "5.0.8"
+version = "5.1.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "asgiref" },
     { name = "sqlparse" },
     { name = "tzdata", marker = "sys_platform == 'win32'" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/79/1c/55733805bb735e26fee0430045efdb61df6fd704b6aebf2154875ef9e6a9/Django-5.0.8.tar.gz", hash = "sha256:ebe859c9da6fead9c9ee6dbfa4943b04f41342f4cea2c4d8c978ef0d10694f2b", size = 10630791 }
+sdist = { url = "https://files.pythonhosted.org/packages/88/6f/8f57ed6dc88656edd4fcb35c50dd963f3cd79303bd711fb0160fc7fd6ab7/Django-5.1.1.tar.gz", hash = "sha256:021ffb7fdab3d2d388bc8c7c2434eb9c1f6f4d09e6119010bbb1694dda286bc2", size = 10675933 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/70/c5/e764700ea2d2c4c153a384cabfa622c6c62bcf3c2530faa928dae206a37d/Django-5.0.8-py3-none-any.whl", hash = "sha256:333a7988f7ca4bc14d360d3d8f6b793704517761ae3813b95432043daec22a45", size = 8185241 },
+    { url = "https://files.pythonhosted.org/packages/ba/aa/b423e37e9ba5480d3fd1d187e3fdbd09f9f71b991468881a45413522ccd3/Django-5.1.1-py3-none-any.whl", hash = "sha256:71603f27dac22a6533fb38d83072eea9ddb4017fead6f67f2562a40402d61c3f", size = 8246418 },
 ]
 
 [[package]]
@@ -589,14 +589,15 @@ sdist = { url = "https://files.pythonhosted.org/packages/5a/19/0423c1a8adb10c9e2
 
 [[package]]
 name = "django-svcs"
-version = "0.2.1.dev1"
+version = "0.3.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
+    { name = "djp" },
     { name = "svcs" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/c5/95/0a92def8de36f97eae9d0fec08dc158e3a5d79e379ad783fdafb0407a7fd/django_svcs-0.2.1.dev1.tar.gz", hash = "sha256:003fe57db34eeab7010a39f87ed98628fa4d9333c0ad2ba0496dc3b51f54eb89", size = 18248 }
+sdist = { url = "https://files.pythonhosted.org/packages/5e/48/b4a2eb057743aa14ca72b105b379827c7d4efd3a4af238c783fb51b5aacd/django_svcs-0.3.2.tar.gz", hash = "sha256:2598c435baf008fd380239fac71e42565b5b172cb5e205d88900b897cd2193b2", size = 20486 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/ee/a5/aa5b1868204fca39b745d71f58861360466476ed85e807342e9ffa9715f4/django_svcs-0.2.1.dev1-py3-none-any.whl", hash = "sha256:fe5efcf4f3608ad085099f013195a8f1796bae4ff4b719bed87a802ec7b9671d", size = 4762 },
+    { url = "https://files.pythonhosted.org/packages/d9/77/f4cf3f4025464f4c43a5e39e4ff0e2bcd8be780740ff308e902ed40aeb30/django_svcs-0.3.2-py3-none-any.whl", hash = "sha256:91ec49bfffd0be7e4c945cba7446eafda7155e2a91cded522c564baad4e780e4", size = 5529 },
 ]
 
 [[package]]
@@ -624,12 +625,16 @@ wheels = [
 ]
 
 [[package]]
-name = "dnspython"
-version = "2.6.1"
+name = "djp"
+version = "0.2"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/37/7d/c871f55054e403fdfd6b8f65fd6d1c4e147ed100d3e9f9ba1fe695403939/dnspython-2.6.1.tar.gz", hash = "sha256:e8f0f9c23a7b7cb99ded64e6c3a6f3e701d78f50c55e002b839dea7225cff7cc", size = 332727 }
+dependencies = [
+    { name = "django" },
+    { name = "pluggy" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/a7/1b/1ed40d2332a86b661e0a9c6e8ea27c7a7b336a5c39501fca4aa331a27bbd/djp-0.2.tar.gz", hash = "sha256:7a1a57197fd4a4678cbdcfebe925746651a8d9e1dc88895be4b46f2822af6e23", size = 8374 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/87/a1/8c5287991ddb8d3e4662f71356d9656d91ab3a36618c3dd11b280df0d255/dnspython-2.6.1-py3-none-any.whl", hash = "sha256:5ef3b9680161f6fa89daf8ad451b5f1a33b18ae8a1c6778cdf4b43f08c0a6e50", size = 307696 },
+    { url = "https://files.pythonhosted.org/packages/7d/39/4dbf0b8a196a45cf19318c14265533d00d3f845adaccd121df30d6b73a2d/djp-0.2-py3-none-any.whl", hash = "sha256:c9d0c59b649a1a3a96efebaf1d85c2bf1319e610f2d2134373434e99cb28ae44", size = 8713 },
 ]
 
 [[package]]
@@ -645,25 +650,24 @@ wheels = [
 ]
 
 [[package]]
-name = "eventlet"
-version = "0.36.1"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "dnspython" },
-    { name = "greenlet" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/1b/df/f441947eef23192c9f179e46868ee8510a6f7b6627b76b88f07692f9c706/eventlet-0.36.1.tar.gz", hash = "sha256:d227fe76a63d9e6a6cef53beb8ad0b2dc40a5e7737c801f4b474cfae1db07bc5", size = 552863 }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/75/af/73efcf654d8875febc6599f5a3d1eed043c1ca34a9b12950208cbf710d2a/eventlet-0.36.1-py3-none-any.whl", hash = "sha256:e42d0f73b718e654c223a033b8692d1a94d778a6c1deb6c3d21442746f3f727f", size = 360472 },
-]
-
-[[package]]
 name = "executing"
 version = "2.1.0"
 source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/8c/e3/7d45f492c2c4a0e8e0fad57d081a7c8a0286cdd86372b070cca1ec0caa1e/executing-2.1.0.tar.gz", hash = "sha256:8ea27ddd260da8150fa5a708269c4a10e76161e2496ec3e587da9e3c0fe4b9ab", size = 977485 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/b5/fd/afcd0496feca3276f509df3dbd5dae726fcc756f1a08d9e25abe1733f962/executing-2.1.0-py2.py3-none-any.whl", hash = "sha256:8d63781349375b5ebccc3142f4b30350c0cd9c79f921cde38be2be4637e98eaf", size = 25805 },
+]
+
+[[package]]
+name = "factory-boy"
+version = "3.3.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "faker" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/99/3d/8070dde623341401b1c80156583d4c793058fe250450178218bb6e45526c/factory_boy-3.3.1.tar.gz", hash = "sha256:8317aa5289cdfc45f9cae570feb07a6177316c82e34d14df3c2e1f22f26abef0", size = 163924 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/33/cf/44ec67152f3129d0114c1499dd34f0a0a0faf43d9c2af05bc535746ca482/factory_boy-3.3.1-py2.py3-none-any.whl", hash = "sha256:7b1113c49736e1e9995bc2a18f4dbf2c52cf0f841103517010b1d825712ce3ca", size = 36878 },
 ]
 
 [[package]]
@@ -700,40 +704,6 @@ version = "6.6.0"
 source = { registry = "https://pypi.org/simple" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/bb/e9/d43f5133b73e7ef9047bda28daaa6905e00b7d39f093b547f7e78ee2fc40/fontawesomefree-6.6.0-py3-none-any.whl", hash = "sha256:599b574431c9bd92ed5fc054d1045a07c42335da36c17884f2b934755eef9089", size = 25645298 },
-]
-
-[[package]]
-name = "greenlet"
-version = "3.0.3"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/17/14/3bddb1298b9a6786539ac609ba4b7c9c0842e12aa73aaa4d8d73ec8f8185/greenlet-3.0.3.tar.gz", hash = "sha256:43374442353259554ce33599da8b692d5aa96f8976d567d4badf263371fbe491", size = 182013 }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/a2/2f/461615adc53ba81e99471303b15ac6b2a6daa8d2a0f7f77fd15605e16d5b/greenlet-3.0.3-cp312-cp312-macosx_11_0_universal2.whl", hash = "sha256:70fb482fdf2c707765ab5f0b6655e9cfcf3780d8d87355a063547b41177599be", size = 273085 },
-    { url = "https://files.pythonhosted.org/packages/e9/55/2c3cfa3cdbb940cf7321fbcf544f0e9c74898eed43bf678abf416812d132/greenlet-3.0.3-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:d4d1ac74f5c0c0524e4a24335350edad7e5f03b9532da7ea4d3c54d527784f2e", size = 660514 },
-    { url = "https://files.pythonhosted.org/packages/38/77/efb21ab402651896c74f24a172eb4d7479f9f53898bd5e56b9e20bb24ffd/greenlet-3.0.3-cp312-cp312-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:149e94a2dd82d19838fe4b2259f1b6b9957d5ba1b25640d2380bea9c5df37676", size = 674295 },
-    { url = "https://files.pythonhosted.org/packages/74/3a/92f188ace0190f0066dca3636cf1b09481d0854c46e92ec5e29c7cefe5b1/greenlet-3.0.3-cp312-cp312-manylinux_2_17_s390x.manylinux2014_s390x.whl", hash = "sha256:15d79dd26056573940fcb8c7413d84118086f2ec1a8acdfa854631084393efcc", size = 669395 },
-    { url = "https://files.pythonhosted.org/packages/63/0f/847ed02cdfce10f0e6e3425cd054296bddb11a17ef1b34681fa01a055187/greenlet-3.0.3-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:881b7db1ebff4ba09aaaeae6aa491daeb226c8150fc20e836ad00041bcb11230", size = 670455 },
-    { url = "https://files.pythonhosted.org/packages/bd/37/56b0da468a85e7704f3b2bc045015301bdf4be2184a44868c71f6dca6fe2/greenlet-3.0.3-cp312-cp312-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:fcd2469d6a2cf298f198f0487e0a5b1a47a42ca0fa4dfd1b6862c999f018ebbf", size = 625692 },
-    { url = "https://files.pythonhosted.org/packages/7c/68/b5f4084c0a252d7e9c0d95fc1cfc845d08622037adb74e05be3a49831186/greenlet-3.0.3-cp312-cp312-musllinux_1_1_aarch64.whl", hash = "sha256:1f672519db1796ca0d8753f9e78ec02355e862d0998193038c7073045899f305", size = 1152597 },
-    { url = "https://files.pythonhosted.org/packages/a4/fa/31e22345518adcd69d1d6ab5087a12c178aa7f3c51103f6d5d702199d243/greenlet-3.0.3-cp312-cp312-musllinux_1_1_x86_64.whl", hash = "sha256:2516a9957eed41dd8f1ec0c604f1cdc86758b587d964668b5b196a9db5bfcde6", size = 1181043 },
-    { url = "https://files.pythonhosted.org/packages/53/80/3d94d5999b4179d91bcc93745d1b0815b073d61be79dd546b840d17adb18/greenlet-3.0.3-cp312-cp312-win_amd64.whl", hash = "sha256:bba5387a6975598857d86de9eac14210a49d554a77eb8261cc68b7d082f78ce2", size = 293635 },
-]
-
-[[package]]
-name = "gunicorn"
-version = "23.0.0"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "packaging" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/34/72/9614c465dc206155d93eff0ca20d42e1e35afc533971379482de953521a4/gunicorn-23.0.0.tar.gz", hash = "sha256:f014447a0101dc57e294f6c18ca6b40227a4c90e9bdb586042628030cba004ec", size = 375031 }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/cb/7d/6dac2a6e1eba33ee43f318edbed4ff29151a49b5d37f080aad1e6469bca4/gunicorn-23.0.0-py3-none-any.whl", hash = "sha256:ec400d38950de4dfd418cff8328b2c8faed0edb0d517d3394e457c317908ca4d", size = 85029 },
-]
-
-[package.optional-dependencies]
-eventlet = [
-    { name = "eventlet" },
 ]
 
 [[package]]
@@ -854,7 +824,7 @@ wheels = [
 
 [[package]]
 name = "nomnom-hugoawards"
-version = "2024.0.0"
+version = "2025.0.0b3"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "boto3" },
@@ -884,10 +854,8 @@ dependencies = [
     { name = "django-svcs" },
     { name = "django-watchman" },
     { name = "environ-config" },
-    { name = "eventlet" },
     { name = "flower" },
     { name = "fontawesomefree" },
-    { name = "gunicorn", extra = ["eventlet"] },
     { name = "icecream" },
     { name = "jinja2" },
     { name = "psycopg2-binary" },
@@ -898,9 +866,9 @@ dependencies = [
     { name = "svcs" },
     { name = "whitenoise" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/bf/38/2c1916cde103b44756efd0529ef75fa282b3f2fe396e2db1533c54ee046f/nomnom_hugoawards-2024.0.0.tar.gz", hash = "sha256:9f33bd56c1848e63a7de2901ce45e0cbccd373f84e95dea16547aba1c5ce1db6", size = 1912227 }
+sdist = { url = "https://files.pythonhosted.org/packages/5d/4a/0fed2505a86ad47a6c74aed297ef1b587486c2c00203eb50fead72b005cc/nomnom_hugoawards-2025.0.0b3.tar.gz", hash = "sha256:2500dbe28245d39d8b92cb55d3fa5f321469384efa9fe471421383e43c6220dc", size = 1877241 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/df/9d/027bde0801a902053a241e99546f286df488adfcb6dccd9df946bddb0d3f/nomnom_hugoawards-2024.0.0-py3-none-any.whl", hash = "sha256:fcbc6abb42ce99eaa0f7d3712af8e9abe1a2a09b296c58d90214fe3f9b5086da", size = 1634371 },
+    { url = "https://files.pythonhosted.org/packages/a8/a9/ecb24a707a9a065005fe0f6b9f47437674f606d030c52b92ace16d8354e2/nomnom_hugoawards-2025.0.0b3-py3-none-any.whl", hash = "sha256:653156d8e0e5b592828648244fff2d7e177d0f90f0fd19ea3cd118a515c34ab1", size = 1628697 },
 ]
 
 [[package]]
@@ -913,12 +881,12 @@ wheels = [
 ]
 
 [[package]]
-name = "packaging"
-version = "24.1"
+name = "pluggy"
+version = "1.5.0"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/51/65/50db4dda066951078f0a96cf12f4b9ada6e4b811516bf0262c0f4f7064d4/packaging-24.1.tar.gz", hash = "sha256:026ed72c8ed3fcce5bf8950572258698927fd1dbda10a5e981cdf0ac37f4f002", size = 148788 }
+sdist = { url = "https://files.pythonhosted.org/packages/96/2d/02d4312c973c6050a18b314a5ad0b3210edb65a906f868e31c111dede4a6/pluggy-1.5.0.tar.gz", hash = "sha256:2cffa88e94fdc978c4c574f15f9e59b7f4201d439195c3715ca9e2486f1d0cf1", size = 67955 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/08/aa/cc0199a5f0ad350994d660967a8efb233fe0416e4639146c089643407ce6/packaging-24.1-py3-none-any.whl", hash = "sha256:5b8f2217dbdbd2f7f384c41c628544e6d52f2d0f53c6d0c3ea61aa5d1d7ff124", size = 53985 },
+    { url = "https://files.pythonhosted.org/packages/88/5f/e351af9a41f866ac3f1fac4ca0613908d9a41741cfcf2228f4ad853b697d/pluggy-1.5.0-py3-none-any.whl", hash = "sha256:44e1ad92c8ca002de6377e165f3e0f1be63266ab4d554740532335b9d75ea669", size = 20556 },
 ]
 
 [[package]]
@@ -1109,11 +1077,23 @@ name = "seattle-2025"
 version = "1.0.0"
 source = { editable = "." }
 dependencies = [
+    { name = "django-svcs" },
     { name = "nomnom-hugoawards" },
 ]
 
+[package.dev-dependencies]
+dev = [
+    { name = "factory-boy" },
+]
+
 [package.metadata]
-requires-dist = [{ name = "nomnom-hugoawards" }]
+requires-dist = [
+    { name = "django-svcs", specifier = "~=0.3.2" },
+    { name = "nomnom-hugoawards", specifier = "~=2025.0.0b3" },
+]
+
+[package.metadata.requires-dev]
+dev = [{ name = "factory-boy", specifier = ">=3.3.0" }]
 
 [[package]]
 name = "sentry-sdk"

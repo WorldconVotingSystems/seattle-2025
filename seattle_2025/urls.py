@@ -15,15 +15,14 @@ Including another URLconf
 2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
-from django.conf import settings
+import djp
+import nomnom.base.views
 from django.contrib import admin
 from django.urls import include, path
-
-import nomnom.base.views
 from django_svcs.apps import svcs_from
 from nomnom.convention import ConventionConfiguration
 
-convention_configuration = svcs_from(settings).get(ConventionConfiguration)
+convention_configuration = svcs_from().get(ConventionConfiguration)
 
 urlpatterns = [
     path("", nomnom.base.views.index, name="index"),
@@ -34,7 +33,7 @@ urlpatterns = [
     path("accounts/", include("django.contrib.auth.urls")),
     path("watchman/", include("watchman.urls")),
     path("__reload__/", include("django_browser_reload.urls")),
-]
+] + djp.urlpatterns()
 
 if convention_configuration.hugo_packet_backend is not None:
     urlpatterns.append(

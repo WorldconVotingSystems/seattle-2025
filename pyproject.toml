@@ -4,11 +4,21 @@ version = "1.0.0"
 description = "Convention app for Seattle Worldcon 2025"
 authors = []
 dependencies = [
-"nomnom-hugoawards",
+    "django-svcs~=0.3.2",
+    "nomnom-hugoawards~=2025.0.0b3",
 ]
 requires-python = ">=3.12"
 readme = "README.md"
 license = {text = "MIT"}
+
+[tool.uv.sources]
+nomnom-hugoawards = { path = "../nomnom/", editable = true }
+django-svcs = { path = "../django-svcs", editable = true }
+
+[tool.uv]
+dev-dependencies = [
+    "factory-boy>=3.3.0",
+]
 
 [tool.ruff.lint.isort]
 known-first-party = ["seattle_2025"]
