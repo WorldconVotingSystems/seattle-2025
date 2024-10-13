@@ -127,7 +127,7 @@ MIDDLEWARE = [
     "nomnom.middleware.HtmxMessageMiddleware",
 ]
 
-ROOT_URLCONF = "seattle_2025.urls"
+ROOT_URLCONF = "config.urls"
 
 TEMPLATES = [
     {
@@ -150,7 +150,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "seattle_2025.wsgi.application"
+WSGI_APPLICATION = "config.wsgi.application"
 
 
 # Database

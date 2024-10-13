@@ -16,7 +16,6 @@ convention = ConventionConfiguration(
     slug="seattle-2025",
     site_url="https://seattlein2025.org",
     nomination_eligibility_cutoff=datetime(2024, 2, 1, 0, 0, 0, tzinfo=timezone.utc),
-    authentication_backends=[],
     hugo_help_email="hugo-help@seattlein2025.org",
     hugo_admin_email="hugo-admin@seattlein2025.org",
     hugo_packet_backend="digitalocean",

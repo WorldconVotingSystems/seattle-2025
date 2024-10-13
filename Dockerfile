@@ -64,15 +64,10 @@ EOT
 # We can’t use `uv sync` here because that only does editable installs:
 # <https://github.com/astral-sh/uv/issues/5792>
 COPY . /src
-RUN --mount=type=cache,target=/root/.cache \
-    uv pip install \
-        --python=$UV_PROJECT_ENVIRONMENT \
-        --no-deps \
-        /src
 
 # Copy in the Django stuff, too:
 RUN <<EOT
-rsync -av /src/manage.py /src/.env.dockertest /src/ /src/seattle_2025_app /app/
+rsync -av /src/manage.py /src/.env.dockertest /src/config /src/seattle_2025_app /app/
 EOT
 
 # Copy in the docker scripts
@@ -107,6 +102,7 @@ apt-get update -qy
 apt-get install -qyy \
     -o APT::Install-Recommends=false \
     -o APT::Install-Suggests=false \
+    gettext \
     python3.12 \
     libpython3.12 \
     libpcre3 \

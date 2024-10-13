@@ -165,7 +165,7 @@ cython_debug/
 
 # Django-specific ignores
 /staticfiles/
-/seattle_2025/settings_override.py
+/config/settings_override.py
 
 # local data
 test-data*

@@ -16,10 +16,11 @@ Including another URLconf
 """
 
 import djp
-import nomnom.base.views
 from django.contrib import admin
 from django.urls import include, path
 from django_svcs.apps import svcs_from
+
+import nomnom.base.views
 from nomnom.convention import ConventionConfiguration
 
 convention_configuration = svcs_from().get(ConventionConfiguration)
