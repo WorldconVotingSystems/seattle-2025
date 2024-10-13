@@ -15,13 +15,15 @@ license = {text = "MIT"}
 nomnom-hugoawards = { path = "../nomnom/", editable = true }
 django-svcs = { path = "../django-svcs", editable = true }
 
-[tool.uv]
-dev-dependencies = [
-    "factory-boy>=3.3.0",
-]
-
 [tool.ruff.lint.isort]
 known-first-party = ["", "seattle_2025_app"]
+
+[tool.uv]
+dev-dependencies = [
+    "factory-boy~=3.3.0",
+    "pytest~=8.3.3",
+    "pytest-django~=4.9.0",
+]
 
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "config.settings"
