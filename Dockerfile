@@ -23,7 +23,7 @@ apt-get install -qyy \
 EOT
 
 # Security-conscious organizations should package/review uv themselves.
-COPY --from=ghcr.io/astral-sh/uv:0.4.13 /uv /bin/uv
+COPY --from=ghcr.io/astral-sh/uv:0.4.22 /uv /bin/uv
 
 # - Silence uv complaining about not being able to use hard links,
 # - tell uv to byte-compile packages for faster application startups,
@@ -32,8 +32,8 @@ COPY --from=ghcr.io/astral-sh/uv:0.4.13 /uv /bin/uv
 # - and finally declare `/app` as the target for `uv sync`.
 ENV UV_LINK_MODE=copy \
     UV_COMPILE_BYTECODE=1 \
+    UV_PYTHON_PREFERENCE=system \
     UV_PYTHON_DOWNLOADS=never \
-    UV_PYTHON=python3.12 \
     UV_PROJECT_ENVIRONMENT=/app
 
 ### End Build Prep -- this is where your Dockerfile should start.

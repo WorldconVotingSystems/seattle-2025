@@ -7,7 +7,7 @@ dependencies = [
     "django-svcs~=0.3.2",
     "nomnom-hugoawards~=2025.0.0b3",
 ]
-requires-python = ">=3.12"
+requires-python = "~=3.12.3"
 readme = "README.md"
 license = {text = "MIT"}
 
