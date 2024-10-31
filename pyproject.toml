@@ -12,8 +12,8 @@ readme = "README.md"
 license = {text = "MIT"}
 
 [tool.uv.sources]
-nomnom-hugoawards = { path = "../nomnom/", editable = true }
 django-svcs = { path = "../django-svcs", editable = true }
+nomnom-hugoawards = { path = "../nomnom", editable = true }
 
 [tool.ruff.lint.isort]
 known-first-party = ["", "seattle_2025_app"]

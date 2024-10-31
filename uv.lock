@@ -579,14 +579,33 @@ sdist = { url = "https://files.pythonhosted.org/packages/5a/19/0423c1a8adb10c9e2
 [[package]]
 name = "django-svcs"
 version = "0.3.2"
-source = { registry = "https://pypi.org/simple" }
+source = { editable = "../django-svcs" }
 dependencies = [
     { name = "djp" },
     { name = "svcs" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/5e/48/b4a2eb057743aa14ca72b105b379827c7d4efd3a4af238c783fb51b5aacd/django_svcs-0.3.2.tar.gz", hash = "sha256:2598c435baf008fd380239fac71e42565b5b172cb5e205d88900b897cd2193b2", size = 20486 }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/d9/77/f4cf3f4025464f4c43a5e39e4ff0e2bcd8be780740ff308e902ed40aeb30/django_svcs-0.3.2-py3-none-any.whl", hash = "sha256:91ec49bfffd0be7e4c945cba7446eafda7155e2a91cded522c564baad4e780e4", size = 5529 },
+
+[package.metadata]
+requires-dist = [
+    { name = "coverage", extras = ["toml"], marker = "extra == 'cov'", specifier = ">=5.3" },
+    { name = "coverage", extras = ["toml"], marker = "extra == 'dev'", specifier = ">=5.3" },
+    { name = "django", marker = "extra == 'cov'", specifier = ">=5.0" },
+    { name = "django", marker = "extra == 'dev'", specifier = ">=5.0" },
+    { name = "django", marker = "extra == 'tests'", specifier = ">=5.0" },
+    { name = "djp", specifier = "~=0.2" },
+    { name = "pytest", marker = "extra == 'cov'" },
+    { name = "pytest", marker = "extra == 'dev'" },
+    { name = "pytest", marker = "extra == 'tests'" },
+    { name = "pytest-xdist", extras = ["psutil"], marker = "extra == 'cov'" },
+    { name = "pytest-xdist", extras = ["psutil"], marker = "extra == 'dev'" },
+    { name = "pytest-xdist", extras = ["psutil"], marker = "extra == 'tests'" },
+    { name = "svcs" },
+]
+
+[package.metadata.dependency-groups]
+dev = [
+    { name = "pytest-asyncio", specifier = ">=0.24.0" },
+    { name = "pytest-django", specifier = ">=4.9.0" },
 ]
 
 [[package]]
@@ -822,8 +841,8 @@ wheels = [
 
 [[package]]
 name = "nomnom-hugoawards"
-version = "2025.0.0b4"
-source = { registry = "https://pypi.org/simple" }
+version = "2025.0.0b5.dev1"
+source = { editable = "../nomnom" }
 dependencies = [
     { name = "boto3" },
     { name = "boto3-stubs", extra = ["s3"] },
@@ -864,9 +883,74 @@ dependencies = [
     { name = "svcs" },
     { name = "whitenoise" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/d7/cd/6de5d2c4cd8e6285db28e8595e2e03aac043d7e96070bceb0571e02969c4/nomnom_hugoawards-2025.0.0b4.tar.gz", hash = "sha256:645ee6f33399e143b943aa95e040062f38ee936af696ba299d737ef5fd562192", size = 1875068 }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/49/47/25725fb6bc8ccc8f0b314398fa44181108742d512cc69928d3334464c99d/nomnom_hugoawards-2025.0.0b4-py3-none-any.whl", hash = "sha256:4e5ba3ba926e6a7000e44045104a5549ba9c33a274fc0814a35574ae6aeaf044", size = 1628700 },
+
+[package.metadata]
+requires-dist = [
+    { name = "boto3", specifier = ">=1.34.17" },
+    { name = "boto3-stubs", extras = ["s3"], specifier = ">=1.34.105" },
+    { name = "botocore-stubs", specifier = ">=1.34.94" },
+    { name = "bs4", specifier = ">=0.0.2" },
+    { name = "celery", specifier = ">=5.3.6" },
+    { name = "django", specifier = "~=5.1.0" },
+    { name = "django-admin-autocomplete-filter", specifier = ">=0.7.1" },
+    { name = "django-bootstrap5", specifier = ">=23.3,<24" },
+    { name = "django-browser-reload", specifier = ">=1.12.1" },
+    { name = "django-celery-beat", specifier = ">=2.5.0" },
+    { name = "django-celery-results", specifier = ">=2.5.1" },
+    { name = "django-click", specifier = ">=2.3.0" },
+    { name = "django-cors-headers", specifier = ">=4.3.1" },
+    { name = "django-extensions", specifier = ">=3.2.3" },
+    { name = "django-fsm", specifier = "==2.8.1" },
+    { name = "django-htmx", specifier = ">=1.17.2" },
+    { name = "django-ipware", specifier = ">=6.0.3" },
+    { name = "django-logentry-admin", specifier = ">=1.1.0" },
+    { name = "django-markdownfield", specifier = ">=0.11.0" },
+    { name = "django-markdownify", specifier = ">=0.9.3" },
+    { name = "django-model-utils", specifier = ">=4.5.1" },
+    { name = "django-oauth-toolkit", specifier = ">=2.3.0" },
+    { name = "django-render-block", specifier = ">=0.9.2" },
+    { name = "django-seed", specifier = ">=0.3.1" },
+    { name = "django-svcs", specifier = "~=0.3.0" },
+    { name = "django-watchman", specifier = ">=1.3.0" },
+    { name = "environ-config", specifier = ">=23.2.0" },
+    { name = "flower", specifier = ">=2.0.1" },
+    { name = "fontawesomefree", specifier = ">=6.5.1" },
+    { name = "icecream", specifier = ">=2.1.3" },
+    { name = "jinja2", specifier = ">=3.1.2" },
+    { name = "psycopg", extras = ["binary"] },
+    { name = "pyrankvote", specifier = ">=2.0.6" },
+    { name = "redis", specifier = ">=5.0.1" },
+    { name = "sentry-sdk", extras = ["celery", "django"], specifier = ">=1.39.1" },
+    { name = "social-auth-app-django", specifier = ">=5.4.0" },
+    { name = "svcs", specifier = ">=24.1.0" },
+    { name = "whitenoise", specifier = ">=6.6.0" },
+]
+
+[package.metadata.dependency-groups]
+dev = [
+    { name = "django-debug-toolbar", specifier = ">=4.2.0" },
+    { name = "django-stubs", specifier = ">=4.2.7" },
+    { name = "django-test-plus", specifier = ">=2.2.3" },
+    { name = "djlint", specifier = ">=1.34.0" },
+    { name = "factory-boy", specifier = ">=3.3.0" },
+    { name = "freezegun", specifier = ">=1.4.0" },
+    { name = "mkdocs", specifier = ">=1.5.3" },
+    { name = "mkdocs-git-revision-date-localized-plugin", specifier = ">=1.2.4" },
+    { name = "mkdocs-glightbox", specifier = ">=0.3.7" },
+    { name = "mkdocs-macros-plugin", specifier = ">=1.0.5" },
+    { name = "mkdocs-material", specifier = ">=9.5.11" },
+    { name = "nplusone", specifier = ">=1.0.0" },
+    { name = "pgcli", specifier = ">=4.1.0" },
+    { name = "pytest", specifier = "~=8.0" },
+    { name = "pytest-cov", specifier = "~=4.1.0" },
+    { name = "pytest-django", specifier = ">=4.7.0" },
+    { name = "pytest-lazy-fixtures", specifier = ">=1.0.5" },
+    { name = "pytest-sugar", specifier = "~=1.0.0" },
+    { name = "pytest-xdist", specifier = "~=3.5.0" },
+    { name = "ruff", specifier = ">=0.6.7" },
+    { name = "setuptools", marker = "python_full_version >= '3.12'", specifier = ">=69.5.1" },
+    { name = "tenacity", specifier = "~=8.5.0" },
+    { name = "wat-inspector", specifier = ">=0.4.0" },
 ]
 
 [[package]]
@@ -1140,8 +1224,8 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "django-svcs", specifier = "~=0.3.2" },
-    { name = "nomnom-hugoawards", specifier = "~=2025.0.0b3" },
+    { name = "django-svcs", editable = "../django-svcs" },
+    { name = "nomnom-hugoawards", editable = "../nomnom" },
 ]
 
 [package.metadata.dependency-groups]
