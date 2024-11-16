@@ -5,6 +5,7 @@ description = "Convention app for Seattle Worldcon 2025"
 authors = []
 dependencies = [
     "django-svcs~=0.3.2",
+    "granian>=1.6.3",
     "nomnom-hugoawards~=2025.0.0b3",
 ]
 requires-python = "~=3.12.3"
@@ -12,7 +13,6 @@ readme = "README.md"
 license = {text = "MIT"}
 
 [tool.uv.sources]
-django-svcs = { path = "../django-svcs", editable = true }
 nomnom-hugoawards = { path = "../nomnom", editable = true }
 
 [tool.ruff.lint.isort]
