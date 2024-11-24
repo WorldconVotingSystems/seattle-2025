@@ -1,13 +1,16 @@
+
 [project]
 name = "seattle-2025"
 version = "1.0.0"
 description = "Convention app for Seattle Worldcon 2025"
 authors = []
 dependencies = [
-    "django-svcs~=0.3.2",
-    "nomnom-hugoawards~=2025.0.0b3",
+  "nomnom-hugoawards~=2025.0.0b3",
+  "granian>=1.6.3",
+  "gunicorn[eventlet]>=21.2.0",
 ]
-requires-python = "~=3.12.4"
+
+requires-python = "~=3.12.3"
 readme = "README.md"
 license = {text = "MIT"}
 
