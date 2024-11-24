@@ -841,7 +841,7 @@ wheels = [
 
 [[package]]
 name = "nomnom-hugoawards"
-version = "2025.0.0b6.dev4"
+version = "2025.0.0b6.dev8"
 source = { editable = "../nomnom" }
 dependencies = [
     { name = "boto3" },
@@ -1211,7 +1211,6 @@ name = "seattle-2025"
 version = "1.0.0"
 source = { editable = "." }
 dependencies = [
-    { name = "django-svcs" },
     { name = "granian" },
     { name = "nomnom-hugoawards" },
 ]
@@ -1225,7 +1224,6 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "django-svcs", specifier = "~=0.3.2" },
     { name = "granian", specifier = ">=1.6.3" },
     { name = "nomnom-hugoawards", editable = "../nomnom" },
 ]
