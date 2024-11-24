@@ -1,0 +1,33 @@
+<header class="site-header">
+  <div class="inside-header grid-container">
+    <div class="site-branding-container">
+      <div class="site-logo">
+        <a href="https://seattlein2025.org/" rel="home">
+          <img
+            class="header-image is-logo-image"
+            alt="{{ CONVENTION_LOGO_ALT_TEXT }}"
+            src="{{ CONVENTION_LOGO }}"
+            width="676"
+            height="765"
+          />
+        </a>
+      </div>
+      <div class="site-branding">
+        <p class="site-description" itemprop="description">
+          {{ CONVENTION_SUBTITLE }}
+        </p>
+      </div>
+    </div>
+  </div>
+</header>
+
+<nav
+  class="main-navigation navbar navbar-expand-lg grid-container sub-menu-right navbar-dark static-top {% if is_admin_page %}admin-header{% endif %}"
+  id="site-navigation"
+  aria-label="Primary"
+>
+  <!-- <nav
+     class="navbar navbar-expand-lg navbar-dark static-top no-print "
+     > -->
+  {% include "bits/convention_header.html" %}
+</nav>

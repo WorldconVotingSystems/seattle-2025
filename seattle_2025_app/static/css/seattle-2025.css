@@ -1,27 +1,57 @@
 :root {
+  --sea-background: #fafaf2;
+  --sea-cream: #fafaf2;
+  --sea-main: #41acba;
+  --sea-teal: #41acba;
+  --sea-secondary: #2b5583;
+  --sea-dark-blue: #2b5583;
+  --sea-accent-1: #ce752d;
+  --sea-dark-orange: #ce752d;
+  --sea-accent-2: #fb24ff;
+  --sea-fuschia: #fb24ff;
+  --sea-accent-3: #ecb51b;
+  --sea-mustard-yellow: #ecb51b;
+
   --ast-global-color-0: #00558c;
   --ast-global-blue: #00558c;
-  --ast-global-lightblue: #99d1ef;
+  --ast-global-lightblue: var(--sea-teal);
   --ast-global-purple: #2b3990;
   --ast-global-darkgreen: #07733b;
   --ast-global-lightgreen: #2266b1;
-  --ast-global-background: #ffffff;
+  --ast-global-darkblue: var(--sea-dark-blue);
+  --ast-global-background: var(--sea-cream);
   --ast-global-grey: #bcbec0;
   --ast-global-darkgrey: #58595b;
   --ast-global-black: #000000;
+
+  --bs-light-rgb: var(--sea-cream);
+  --bs-dark-rgb: var(--sea-dark-blue);
+  --bs-list-group-bg: var(--sea-cream) !important;
+
+  --sea-body-font: Roboto, Sans-serif;
+  --sea-heading-font: Cookie, handwriting;
+  --sea-subheading-font: Cookie, handwriting;
 }
 
 .panel {
-  background: var(--ast-global-background);
+  background: var(--sea-cream) !important;
 }
 
 .text-dark {
-  color: var(--ast-global-blue) !important;
+  color: var(--sea-teal) !important;
 }
 
 body {
-  font-family: Roboto;
-  font-family: Roboto, Sans-serif;
+  font-family: var(--sea-body-font);
+  background-color: var(--ast-global-background);
+}
+
+header {
+  font-family: var(--sea-heading-font);
+}
+
+.navbar {
+  background-color: var(--sea-dark-blue);
 }
 
 h1,
@@ -34,38 +64,38 @@ h6 {
 }
 
 h1 {
-  color: var(--ast-global-darkgrey);
+  color: var(--sea-dark-blue);
   font-size: 2em;
   line-height: 1.2;
 }
 
 h2 {
-  color: var(--ast-global-darkgrey);
+  color: var(--sea-dark-blue);
   font-size: 1.7em;
   line-height: 1.3;
 }
 
 h3,
 legend {
-  color: var(--ast-global-darkgrey);
+  color: var(--sea-dark-blue);
   font-size: 1.5em;
   line-height: 1.4;
 }
 
 h4 {
-  color: var(--ast-global-darkgrey);
+  color: var(--sea-dark-blue);
   line-height: 1.5;
   font-size: 1.3em;
 }
 
 h5 {
-  color: var(--ast-global-darkgrey);
+  color: var(--sea-dark-blue);
   line-height: 1.6;
   font-size: 1.2em;
 }
 
 h6 {
-  color: var(--ast-global-darkgrey);
+  color: var(--sea-dark-blue);
   line-height: 1.7;
   font-size: 1.1em;
 }
@@ -129,4 +159,49 @@ table.results {
 
 .results .won {
   font-weight: bold;
+}
+
+.header-image {
+  width: 150px;
+  height: auto;
+}
+
+.inside-header {
+  padding: 20px 40px;
+}
+
+.site-header {
+  background-color: var(--sea-teal);
+  position: relative;
+}
+
+.site-branding-container {
+  display: inline-flex;
+  align-items: center;
+  text-align: left;
+  flex-shrink: 0;
+}
+
+.site-branding-container .site-logo {
+  margin-right: 1em;
+}
+
+.site-logo {
+  display: inline-block;
+  max-width: 100%;
+}
+
+.site-description {
+  font-family: Cookie, handwriting;
+  font-size: 30px;
+  margin: 0;
+  line-height: 1.5;
+  font-weight: 400;
+  text-transform: none;
+}
+
+.grid-container {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 1200px;
 }

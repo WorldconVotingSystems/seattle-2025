@@ -1,5 +1,5 @@
 version = 1
-requires-python = ">=3.12.4, <3.13"
+requires-python = ">=3.12.3, <3.13"
 
 [[package]]
 name = "amqp"
@@ -578,15 +578,15 @@ sdist = { url = "https://files.pythonhosted.org/packages/5a/19/0423c1a8adb10c9e2
 
 [[package]]
 name = "django-svcs"
-version = "0.3.2"
+version = "0.3.3"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "djp" },
     { name = "svcs" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/5e/48/b4a2eb057743aa14ca72b105b379827c7d4efd3a4af238c783fb51b5aacd/django_svcs-0.3.2.tar.gz", hash = "sha256:2598c435baf008fd380239fac71e42565b5b172cb5e205d88900b897cd2193b2", size = 20486 }
+sdist = { url = "https://files.pythonhosted.org/packages/4b/3c/431de1ee87ca1f57c1505bd054221477fbcae8256d305271a5ae40e13c12/django_svcs-0.3.3.tar.gz", hash = "sha256:ee40201e114a3a4026f91a23e9d1bf781c5bda01b45be4c53a9fbc1dad8a15d2", size = 24918 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/d9/77/f4cf3f4025464f4c43a5e39e4ff0e2bcd8be780740ff308e902ed40aeb30/django_svcs-0.3.2-py3-none-any.whl", hash = "sha256:91ec49bfffd0be7e4c945cba7446eafda7155e2a91cded522c564baad4e780e4", size = 5529 },
+    { url = "https://files.pythonhosted.org/packages/51/d2/de8b1a56b68aabb4fd0aff7148ea124d78eaa54c4ef4ea4de2b28a3a9790/django_svcs-0.3.3-py3-none-any.whl", hash = "sha256:6743374bba775e52d8fdafecf66a63d74124010a37dedcc2c68117082a75317f", size = 5565 },
 ]
 
 [[package]]
@@ -693,6 +693,25 @@ version = "6.6.0"
 source = { registry = "https://pypi.org/simple" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/bb/e9/d43f5133b73e7ef9047bda28daaa6905e00b7d39f093b547f7e78ee2fc40/fontawesomefree-6.6.0-py3-none-any.whl", hash = "sha256:599b574431c9bd92ed5fc054d1045a07c42335da36c17884f2b934755eef9089", size = 25645298 },
+]
+
+[[package]]
+name = "granian"
+version = "1.6.3"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "click" },
+    { name = "uvloop", marker = "platform_python_implementation == 'CPython' and sys_platform != 'win32'" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/40/ba/22e4d977c177a0624f322d6b4910d943b81655815e00212a4e495ea8655c/granian-1.6.3.tar.gz", hash = "sha256:718949b6031135297d8724516fc67d08defbda175d68834417880d36968a0917", size = 79726 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/3d/ba/5a22735828697d5cb1e73dba5815b56cf48c4e33da674a986ffd00b817b7/granian-1.6.3-cp312-cp312-macosx_10_12_x86_64.whl", hash = "sha256:e23a1112ccff34d7c7758e4ea0461b129fcc54833d4d52b629bb414d4aa487b4", size = 2557175 },
+    { url = "https://files.pythonhosted.org/packages/b2/17/62e40cc978ed98126e7838d593e2b5dff920bec655dad6db4c781e00ac58/granian-1.6.3-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:32a3c27f62eafb30ac8175e65de75f799cd31d40de757e9c786fcfb969f1a8ef", size = 2393411 },
+    { url = "https://files.pythonhosted.org/packages/b5/c2/236382a10caea94384872b9948aaa92bf83f1a8f9e39214a4a36acd8cf7b/granian-1.6.3-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:2943e4b3be967a200586bed800f1af44cd31f7cf84cb0c17012ef17e7db07421", size = 2980435 },
+    { url = "https://files.pythonhosted.org/packages/0e/e9/6411951986b8bdda6699eb662df65059f2913806fa719128b433a4f15f4f/granian-1.6.3-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:e57b5beb23f4941ba478097cb9d8d41a554a0c1cb676f08dc07401ad3dc4cfce", size = 3420390 },
+    { url = "https://files.pythonhosted.org/packages/c9/67/40ff6b936bb8e17e8764c10bd32b4795bb0d578eae45434fe56c80e06144/granian-1.6.3-cp312-cp312-musllinux_1_1_aarch64.whl", hash = "sha256:344b903673ef5da6457836d3464226b375fff9213fca469334c594c192d12182", size = 3147120 },
+    { url = "https://files.pythonhosted.org/packages/63/de/481625c3c98e87d6b66c4d2ee7e176176bd341dbcec963d2573144ec80bd/granian-1.6.3-cp312-cp312-musllinux_1_1_x86_64.whl", hash = "sha256:33396d610dd61bf7ce635aa8cefa0cc7ac26adc1f9d1d18703b40dca0dc761de", size = 3247296 },
+    { url = "https://files.pythonhosted.org/packages/0c/76/7a510897dc6ffbf1361e1ae3b3658e86c130daa17f625dcb5759637584ad/granian-1.6.3-cp312-none-win_amd64.whl", hash = "sha256:b4accf60f48bdeb77e3eacdabddcdd28a46f4e716b9eb4348ec3b95b42add22d", size = 2146123 },
 ]
 
 [[package]]
@@ -822,7 +841,7 @@ wheels = [
 
 [[package]]
 name = "nomnom-hugoawards"
-version = "2025.0.0b4"
+version = "2025.0.0b6"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "boto3" },
@@ -864,9 +883,9 @@ dependencies = [
     { name = "svcs" },
     { name = "whitenoise" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/d7/cd/6de5d2c4cd8e6285db28e8595e2e03aac043d7e96070bceb0571e02969c4/nomnom_hugoawards-2025.0.0b4.tar.gz", hash = "sha256:645ee6f33399e143b943aa95e040062f38ee936af696ba299d737ef5fd562192", size = 1875068 }
+sdist = { url = "https://files.pythonhosted.org/packages/60/9b/c6c0ccb1f077d916f6ece8b0129de34db942f590d15ef0c605e1e772210a/nomnom_hugoawards-2025.0.0b6.tar.gz", hash = "sha256:42e54252373e7c0ac7c80ee06b44422866d4a6938819968456bae8a8e485764b", size = 1879257 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/49/47/25725fb6bc8ccc8f0b314398fa44181108742d512cc69928d3334464c99d/nomnom_hugoawards-2025.0.0b4-py3-none-any.whl", hash = "sha256:4e5ba3ba926e6a7000e44045104a5549ba9c33a274fc0814a35574ae6aeaf044", size = 1628700 },
+    { url = "https://files.pythonhosted.org/packages/90/c4/8cdfeff231060987823dc2188f4e479627789dd38e96529ec91470d7f9b6/nomnom_hugoawards-2025.0.0b6-py3-none-any.whl", hash = "sha256:1a951e0631548df31ee9aa35f6c723c19ca2f78aa04dfb3ee59087fc93756b15", size = 1628690 },
 ]
 
 [[package]]
@@ -1127,11 +1146,11 @@ name = "seattle-2025"
 version = "1.0.0"
 source = { editable = "." }
 dependencies = [
-    { name = "django-svcs" },
+    { name = "granian" },
     { name = "nomnom-hugoawards" },
 ]
 
-[package.dependency-groups]
+[package.dev-dependencies]
 dev = [
     { name = "factory-boy" },
     { name = "pytest" },
@@ -1140,11 +1159,11 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "django-svcs", specifier = "~=0.3.2" },
-    { name = "nomnom-hugoawards", specifier = "~=2025.0.0b3" },
+    { name = "granian", specifier = ">=1.6.3" },
+    { name = "nomnom-hugoawards", specifier = "~=2025.0.0b6" },
 ]
 
-[package.metadata.dependency-groups]
+[package.metadata.requires-dev]
 dev = [
     { name = "factory-boy", specifier = "~=3.3.0" },
     { name = "pytest", specifier = "~=8.3.3" },
@@ -1342,6 +1361,20 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/43/6d/fa469ae21497ddc8bc93e5877702dca7cb8f911e337aca7452b5724f1bb6/urllib3-2.2.2.tar.gz", hash = "sha256:dd505485549a7a552833da5e6063639d0d177c04f23bc3864e41e5dc5f612168", size = 292266 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/ca/1c/89ffc63a9605b583d5df2be791a27bc1a42b7c32bab68d3c8f2f73a98cd4/urllib3-2.2.2-py3-none-any.whl", hash = "sha256:a448b2f64d686155468037e1ace9f2d2199776e17f0a46610480d311f73e3472", size = 121444 },
+]
+
+[[package]]
+name = "uvloop"
+version = "0.21.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/af/c0/854216d09d33c543f12a44b393c402e89a920b1a0a7dc634c42de91b9cf6/uvloop-0.21.0.tar.gz", hash = "sha256:3bf12b0fda68447806a7ad847bfa591613177275d35b6724b1ee573faa3704e3", size = 2492741 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/8c/4c/03f93178830dc7ce8b4cdee1d36770d2f5ebb6f3d37d354e061eefc73545/uvloop-0.21.0-cp312-cp312-macosx_10_13_universal2.whl", hash = "sha256:359ec2c888397b9e592a889c4d72ba3d6befba8b2bb01743f72fffbde663b59c", size = 1471284 },
+    { url = "https://files.pythonhosted.org/packages/43/3e/92c03f4d05e50f09251bd8b2b2b584a2a7f8fe600008bcc4523337abe676/uvloop-0.21.0-cp312-cp312-macosx_10_13_x86_64.whl", hash = "sha256:f7089d2dc73179ce5ac255bdf37c236a9f914b264825fdaacaded6990a7fb4c2", size = 821349 },
+    { url = "https://files.pythonhosted.org/packages/a6/ef/a02ec5da49909dbbfb1fd205a9a1ac4e88ea92dcae885e7c961847cd51e2/uvloop-0.21.0-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:baa4dcdbd9ae0a372f2167a207cd98c9f9a1ea1188a8a526431eef2f8116cc8d", size = 4580089 },
+    { url = "https://files.pythonhosted.org/packages/06/a7/b4e6a19925c900be9f98bec0a75e6e8f79bb53bdeb891916609ab3958967/uvloop-0.21.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:86975dca1c773a2c9864f4c52c5a55631038e387b47eaf56210f873887b6c8dc", size = 4693770 },
+    { url = "https://files.pythonhosted.org/packages/ce/0c/f07435a18a4b94ce6bd0677d8319cd3de61f3a9eeb1e5f8ab4e8b5edfcb3/uvloop-0.21.0-cp312-cp312-musllinux_1_2_aarch64.whl", hash = "sha256:461d9ae6660fbbafedd07559c6a2e57cd553b34b0065b6550685f6653a98c1cb", size = 4451321 },
+    { url = "https://files.pythonhosted.org/packages/8f/eb/f7032be105877bcf924709c97b1bf3b90255b4ec251f9340cef912559f28/uvloop-0.21.0-cp312-cp312-musllinux_1_2_x86_64.whl", hash = "sha256:183aef7c8730e54c9a3ee3227464daed66e37ba13040bb3f350bc2ddc040f22f", size = 4659022 },
 ]
 
 [[package]]

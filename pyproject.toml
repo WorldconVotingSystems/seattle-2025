@@ -5,18 +5,15 @@ version = "1.0.0"
 description = "Convention app for Seattle Worldcon 2025"
 authors = []
 dependencies = [
-  "nomnom-hugoawards~=2025.0.0b3",
-  "granian>=1.6.3",
-  "gunicorn[eventlet]>=21.2.0",
+    "granian>=1.6.3",
+    "nomnom-hugoawards~=2025.0.0b6",
 ]
-
 requires-python = "~=3.12.3"
 readme = "README.md"
 license = {text = "MIT"}
 
 [tool.uv.sources]
-nomnom-hugoawards = { path = "../nomnom/", editable = true }
-django-svcs = { path = "../django-svcs", editable = true }
+nomnom-hugoawards = { path = "../nomnom", editable = true }
 
 [tool.ruff.lint.isort]
 known-first-party = ["", "seattle_2025_app"]
