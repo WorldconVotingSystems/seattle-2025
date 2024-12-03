@@ -36,6 +36,12 @@ jobs:
       id-token: write
 
     steps:
+      - name: lowercase the registry
+        # what even the fuck is this.
+        # here purely because of https://github.com/orgs/community/discussions/25768
+        run: |
+          echo REGISTRY_IMAGE_LC="${REGISTRY_IMAGE,,}" >> "$GITHUB_ENV"
+
       - name: Default to allowing push
         run: |
           echo "CAN_PUSH_IMAGES=true" >> "$GITHUB_ENV"
@@ -91,7 +97,7 @@ jobs:
           push: ${{ env.CAN_PUSH_IMAGES == 'true' }}
           platforms: ${{ matrix.platform }}
           labels: ${{ steps.meta.outputs.labels }}
-          outputs: type=image,name=${{ steps.meta.outputs.tags[0] }},push-by-digest=true,name-canonical=true,push=true
+          outputs: type=image,name=${{ env.REGISTRY_IMAGE_LC }},push-by-digest=true,name-canonical=true,push=true
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
