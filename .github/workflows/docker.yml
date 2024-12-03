@@ -35,6 +35,9 @@ jobs:
       # with sigstore/fulcio when running outside of PRs.
       id-token: write
 
+    outputs:
+      can_push_images: ${{ steps.persist-push.outputs.can_push_images }}
+
     steps:
       - name: set the build step environment
         run: |
@@ -55,6 +58,11 @@ jobs:
         run: |
           echo "This is a pull request from an external repository. Disabling image push."
           echo "CAN_PUSH_IMAGES=false" >> "$GITHUB_ENV"
+
+      - name: persist the push instruction
+        id: persist-push
+        run: |
+          echo "can_push_images=$CAN_PUSH_IMAGES" >> "$GITHUB_OUTPUT"
 
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -153,7 +161,7 @@ jobs:
 
       - name: Create manifest list and push
         working-directory: /tmp/digests
-        if: ${{ env.CAN_PUSH_IMAGES == 'true' }}
+        if: ${{ needs.build.outputs.can_push_images }}
         run: |
           docker buildx imagetools create $(jq -cr '.tags | map("-t " + .) | join(" ")' <<< "$DOCKER_METADATA_OUTPUT_JSON") \
             $(printf '${{ env.REGISTRY_IMAGE_LC }}@sha256:%s ' *)
