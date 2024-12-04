@@ -5,6 +5,7 @@ version = "1.0.0"
 description = "Convention app for Seattle Worldcon 2025"
 authors = []
 dependencies = [
+    "django-svcs>=0.3.4",
     "granian>=1.6.3",
     "nomnom-hugoawards~=2025.0.0b6",
 ]
