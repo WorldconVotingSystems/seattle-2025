@@ -108,6 +108,8 @@ apt-get install -qyy \
     libpcre3 \
     libxml2 \
     tini \
+    curl \
+    jq \
     dotenv
 
 apt-get clean
