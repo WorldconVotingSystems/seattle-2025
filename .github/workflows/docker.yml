@@ -186,6 +186,8 @@ jobs:
       - name: Inspect image
         run: |
           docker buildx imagetools inspect ${{ env.REGISTRY_IMAGE }}:${{ steps.meta.outputs.version }}
+    outputs:
+      version: ${{ steps.meta.outputs.version }}
 
   validate:
     runs-on: ubuntu-latest
@@ -194,7 +196,7 @@ jobs:
       packages: read
 
     env:
-      NOMNOM_VERSION: ${{ github.sha }}
+      NOMNOM_VERSION: ${{ needs.merge.outputs.version }}
 
     needs:
       - merge
