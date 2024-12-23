@@ -186,3 +186,49 @@ jobs:
       - name: Inspect image
         run: |
           docker buildx imagetools inspect ${{ env.REGISTRY_IMAGE }}:${{ steps.meta.outputs.version }}
+    outputs:
+      version: ${{ steps.meta.outputs.version }}
+
+  validate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: read
+
+    env:
+      NOMNOM_VERSION: ${{ needs.merge.outputs.version }}
+
+    needs:
+      - merge
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+
+      - name: copy the environment
+        run: |
+          cp deploy/staging/.env.template deploy/staging/.env
+
+      - name: pull the staging images
+        run: |
+          docker compose -f deploy/staging/compose.yml -p staging pull
+
+      - name: start the staging environment
+        run: |
+          docker compose -f deploy/staging/compose.yml -p staging up --wait
+
+      - name: attempt to read the home page from the website
+        run: |
+          curl -s -o /dev/null \
+            -H Host:nomnom-staging.seattlein2025.org \
+            -w "%{http_code}" \
+            http://localhost:8000/ >> /tmp/status_code
+
+      - name: check the status code
+        run: |
+          status_code=$(cat /tmp/status_code)
+          if [ "$status_code" != "200" ]; then
+            echo "The status code was not 200. It was $status_code."
+            exit 1
+          fi
