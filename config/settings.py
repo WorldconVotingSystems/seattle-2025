@@ -105,14 +105,13 @@ SITE_ID = 1
 NOMNOM_ALLOW_USERNAME_LOGIN_FOR_MEMBERS = cfg.allow_username_login
 
 AUTHENTICATION_BACKENDS = [
-    # NOTE: the nomnom.nominate.apps.AppConfig.ready() hook will install handlers in this, as the first
-    # set. Any handler in here will be superseded by those.
-    #
+    "seattle_2025_app.auth.ConTrollOAuth2Backend",
     # Uncomment following if you want to access the admin
     "django.contrib.auth.backends.ModelBackend",
 ]
 
 MIDDLEWARE = [
+    "config.middleware.ExceptionLoggingMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -211,6 +210,11 @@ SOCIAL_AUTH_JSONFIELD_ENABLED = True
 SOCIAL_AUTH_LOGIN_ERROR_URL = "election:login_error"
 
 SOCIAL_AUTH_ADMIN_USER_SEARCH_FIELDS = ["username", "first_name", "email"]
+
+SOCIAL_AUTH_CONTROLL_BASE_URL = "https://regtest.seattlein2025.org"
+SOCIAL_AUTH_CONTROLL_USER_ID_PREFIX = "controll"
+SOCIAL_AUTH_CONTROLL_KEY = cfg.oauth.key
+SOCIAL_AUTH_CONTROLL_SECRET = cfg.oauth.secret
 
 # This is a probably-okay social auth pipeline, but you may need to adjust it for your needs.
 # See the social_django documentation for details.
