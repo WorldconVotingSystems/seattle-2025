@@ -8,6 +8,7 @@ dependencies = [
     "django-svcs>=0.3.4",
     "granian>=1.6.3",
     "nomnom-hugoawards~=2025.0.0b6",
+    "social-auth-app-django~=5.4",
 ]
 requires-python = "~=3.12.3"
 readme = "README.md"

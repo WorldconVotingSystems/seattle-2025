@@ -1148,6 +1148,7 @@ dependencies = [
     { name = "django-svcs" },
     { name = "granian" },
     { name = "nomnom-hugoawards" },
+    { name = "social-auth-app-django" },
 ]
 
 [package.dev-dependencies]
@@ -1162,6 +1163,7 @@ requires-dist = [
     { name = "django-svcs", specifier = ">=0.3.4" },
     { name = "granian", specifier = ">=1.6.3" },
     { name = "nomnom-hugoawards", specifier = "~=2025.0.0b6" },
+    { name = "social-auth-app-django", specifier = "~=5.4" },
 ]
 
 [package.metadata.requires-dev]
