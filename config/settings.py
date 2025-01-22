@@ -20,7 +20,7 @@ import djp
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # import the system configuration from the application
-from nomnom.convention import system_configuration as cfg
+from config import system_configuration as cfg
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
@@ -110,6 +110,7 @@ AUTHENTICATION_BACKENDS = [
     #
     # Uncomment following if you want to access the admin
     "django.contrib.auth.backends.ModelBackend",
+    "seattle_2025_app.auth.ControllBackend",
 ]
 
 MIDDLEWARE = [
@@ -371,6 +372,16 @@ if cfg.sentry_sdk.dsn is not None:
         # include the user and client IP
         send_default_pii=True,
     )
+
+CONTROLL_JWT_KEY = cfg.controll_jwt_key
+
+if cfg.debug:
+    import icecream
+
+    icecream.install()
+
+# Seed data can come from here:
+FIXTURE_DIRS = [BASE_DIR / "seed"]
 
 try:
     from .settings_override import *  # noqa: F403
