@@ -16,11 +16,10 @@ Including another URLconf
 """
 
 import djp
+import nomnom.base.views
 from django.contrib import admin
 from django.urls import include, path
 from django_svcs.apps import svcs_from
-
-import nomnom.base.views
 from nomnom.convention import ConventionConfiguration
 
 convention_configuration = svcs_from().get(ConventionConfiguration)
@@ -34,6 +33,7 @@ urlpatterns = [
     path("accounts/", include("django.contrib.auth.urls")),
     path("watchman/", include("watchman.urls")),
     path("__reload__/", include("django_browser_reload.urls")),
+    path("", include("seattle_2025_app.urls", namespace="seattle_2025_app")),
 ] + djp.urlpatterns()
 
 if convention_configuration.hugo_packet_backend is not None:
