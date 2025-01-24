@@ -21,7 +21,6 @@ readme = "README.md"
 license = {text = "MIT"}
 
 [tool.uv.sources]
-nomnom-hugoawards = { path = "../nomnom", editable = true }
 # nomnom-hugoawards = { path = "../nomnom", editable = true }
 # social-auth-core = { path = "../social-core" }
 
