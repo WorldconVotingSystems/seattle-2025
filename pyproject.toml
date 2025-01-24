@@ -14,12 +14,14 @@ dependencies = [
     "cryptography>=44.0.0",
     "pyjwt>=2.10.1",
     "sentry-sdk>=2.19.0",
+    "django-debug-toolbar>=5.0.1",
 ]
 requires-python = "~=3.12.3"
 readme = "README.md"
 license = {text = "MIT"}
 
 [tool.uv.sources]
+nomnom-hugoawards = { path = "../nomnom", editable = true }
 # nomnom-hugoawards = { path = "../nomnom", editable = true }
 # social-auth-core = { path = "../social-core" }
 
