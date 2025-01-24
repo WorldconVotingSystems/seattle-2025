@@ -28,6 +28,8 @@ NOM_OAUTH_KEY=bogon
 NOM_OAUTH_SECRET=bogon
 NOM_OAUTH_BACKEND=nom.oauth2_backends.DummyOAuth2Backend
 
+NOM_CONTROLL_JWT_KEY=bogonjwtkey
+
 NOM_EMAIL_HOST=localhost
 NOM_EMAIL_PORT=51025
 

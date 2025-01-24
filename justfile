@@ -11,12 +11,13 @@ bootstrap:
     #!/usr/bin/env bash
     set -eu -o pipefail
     docker compose up -d
-    scripts/get_local_docker_ports.sh
-    scripts/get_web_port.sh
 
     # if our .env isn't there, this is probably a checkout;
     # we want to generate it instead.
     scripts/ensure_env.sh
+
+    scripts/get_local_docker_ports.sh
+    scripts/get_web_port.sh
 
     # we run this again to get the new environment locked in
     docker compose up -d
