@@ -1,0 +1,49 @@
+# NomNom Production Caddyfile
+#
+# This sets up servers both on the basic hostname and on the public-facing one.
+# Error pages are in the proxy directory.
+{
+	servers {
+		metrics
+	}
+	log {
+		output file /var/log/caddy/caddy_main.log {
+			roll_size 100MiB
+			roll_keep 5
+			roll_keep_for 100d
+		}
+		format json
+		level INFO
+	}
+}
+
+nomnom.seattlein2025.org {
+	handle_errors {
+		@error502 expression {http.error.status_code} == 502
+		handle @error502 {
+			root * /opt/nomnom/deploy/proxy
+			rewrite * /502.html
+			file_server
+		}
+
+		@error50x expression {http.error.status_code} >= 500 && {http.error.status_code} <600
+		handle @error50x {
+			root * /opt/nomnom/deploy/proxy
+			rewrite * /50x.html
+			file_server
+		}
+	}
+
+	reverse_proxy localhost:8000
+	metrics /metrics
+
+	log {
+		output file /var/log/caddy/nomnom.seattlein2025.org.log {
+			roll_size 100MiB
+			roll_keep 5
+			roll_keep_for 100d
+		}
+		format json
+		level INFO
+	}
+}
