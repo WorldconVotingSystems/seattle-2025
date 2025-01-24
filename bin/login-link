@@ -1,0 +1,53 @@
+#!/usr/bin/env uv run --script
+# /// script
+# requires-python = ">= 3.13"
+# dependencies = [
+#    "pyjwt>=2.10.1",
+#    "click",
+# ]
+# ///
+import os
+from datetime import datetime, timedelta, timezone
+
+import click
+import jwt
+
+keys = {
+    "https://nomnom.seattlein2025.org": os.environ["NOM_CONTROLL_JWT_KEY_PROD"],
+    "https://nomnom-staging.seattlein2025.org": os.environ["NOM_CONTROLL_JWT_KEY"],
+    "http://localhost:8000": os.environ["NOM_CONTROLL_JWT_KEY"],
+    "https://void.camel-tortoise.ts.net": os.environ["NOM_CONTROLL_JWT_KEY"],
+}
+
+
+@click.command()
+@click.option("--base-url", default="https://nomnom.seattlein2025.org")
+@click.argument("perid")
+@click.argument("email")
+@click.argument("first_name")
+@click.argument("last_name")
+@click.option("--rights", default="hugo_nominate,hugo_vote")
+@click.option("--newperid", default=None)
+def main(base_url, perid, email, first_name, last_name, rights, newperid):
+    user_record = {
+        "exp": (datetime.now(timezone.utc) + timedelta(days=1)).timestamp(),
+        "email": email,
+        "perid": perid,
+        "newperid": newperid,
+        "legalName": None,
+        "first_name": first_name,
+        "last_name": last_name,
+        "fullName": f"{first_name} {last_name}",
+        "resType": "fullRights",
+        "rights": rights,
+    }
+
+    key = keys.get(base_url, os.environ["NOM_CONTROLL_JWT_KEY"])
+
+    token = jwt.encode(user_record, key, algorithm="HS512")
+
+    print(f"{base_url}/controll-redirect/?r={token}")
+
+
+if __name__ == "__main__":
+    main()
