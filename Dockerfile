@@ -101,6 +101,8 @@ apt-get update -qy
 apt-get install -qyy \
     -o APT::Install-Recommends=false \
     -o APT::Install-Suggests=false \
+    # needed so we can send email with TLS \
+    ca-certificates \
     gettext \
     python3.12 \
     libpython3.12 \
