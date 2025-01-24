@@ -466,6 +466,19 @@ wheels = [
 ]
 
 [[package]]
+name = "django-debug-toolbar"
+version = "5.0.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "django" },
+    { name = "sqlparse" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/93/f6/022cffde1ec6daf3d1418d03a69ddc4f760151f75664dcc9fd2167b2997f/django_debug_toolbar-5.0.1.tar.gz", hash = "sha256:296f6f18a80710e84fbb8361538ae5ec522a75ebe9ab67db34bcf1026cbeb420", size = 295982 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/36/f7/3b406dc871d88c938d2bd967e65acf725b46c4e7c9add6a1f1bbaff9bdcf/django_debug_toolbar-5.0.1-py3-none-any.whl", hash = "sha256:7456cc2e951db37dab335686db7803c4a0ecb6736d120705f6668db9548bf49f", size = 260038 },
+]
+
+[[package]]
 name = "django-extensions"
 version = "3.2.3"
 source = { registry = "https://pypi.org/simple" }
@@ -1407,6 +1420,7 @@ source = { editable = "." }
 dependencies = [
     { name = "cryptography" },
     { name = "django-celery" },
+    { name = "django-debug-toolbar" },
     { name = "django-fsm" },
     { name = "django-svcs" },
     { name = "granian" },
@@ -1431,6 +1445,7 @@ dev = [
 requires-dist = [
     { name = "cryptography", specifier = ">=44.0.0" },
     { name = "django-celery", specifier = ">=3.1.17" },
+    { name = "django-debug-toolbar", specifier = ">=5.0.1" },
     { name = "django-fsm", specifier = ">=2.8.1" },
     { name = "django-svcs", specifier = ">=0.3.4" },
     { name = "granian", specifier = ">=1.6.3" },
