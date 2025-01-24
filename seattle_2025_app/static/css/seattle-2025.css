@@ -122,6 +122,15 @@ h6 {
   flex-grow: 1;
 }
 
+.nav-logout {
+  margin-left: auto;
+  align-self: center;
+}
+
+.nav-logout .btn {
+  font-size: 15px;
+}
+
 .nav-link {
   color: var(--sea-accent-4);
   font-family: var(--sea-body-font);
@@ -130,10 +139,6 @@ h6 {
 
 .nav-link:is(:hover, :focus) {
   color: var(--sea-accent-3);
-}
-
-.nav-link .text-dark {
-  color: inherit !important; /* override bootstrap */
 }
 
 .footer {
