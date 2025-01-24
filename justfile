@@ -28,6 +28,9 @@ bootstrap:
     just migrate
     just seed
 
+fake_data:
+    uv run manage.py loaddata dev/0002-yugo-awards.json
+
 # Serve locally
 serve:
     uv run manage.py runserver {{ serve_host }}:$DEV_SERVER_PORT
