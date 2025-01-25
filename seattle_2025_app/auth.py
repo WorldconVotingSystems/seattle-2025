@@ -132,6 +132,8 @@ def create_member(
         last_name=last_name,
     )
 
+    sentry_sdk.set_user(user_info_from_user(user))
+
     ControllPerson.objects.create(
         perid=perid,
         newperid=newperid,
@@ -158,3 +160,11 @@ def create_member(
         user.save()
 
     return member
+
+
+def user_info_from_user(user: AbstractUser):
+    return {
+        "id": str(user.pk),
+        "email": user.email,
+        "username": user.username,
+    }
