@@ -20,7 +20,7 @@ def create_username(perid: str | None, newperid: str | None) -> str:
     """
     perid = perid or "xxx"
     newperid = newperid or "xxx"
-    return f"controll:{perid}:{newperid}"
+    return f"controll.{perid}.{newperid}"
 
 
 class ControllBackend(BaseBackend):
@@ -123,6 +123,8 @@ def create_member(
 
     UserModel = get_user_model()
 
+    member_number = perid if perid else newperid
+
     user = UserModel.objects.create(
         username=create_username(perid, newperid),
         email=email,
@@ -139,7 +141,7 @@ def create_member(
     member = nominate.NominatingMemberProfile.objects.create(
         user=user,
         preferred_name=full_name,
-        member_number=token.get("perid"),
+        member_number=member_number,
     )
 
     # now we check for the rights, and assign the member to the right groups.
