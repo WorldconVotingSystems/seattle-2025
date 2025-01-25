@@ -6,7 +6,9 @@
 #    "click",
 # ]
 # ///
+import json
 import os
+import sys
 from datetime import datetime, timedelta, timezone
 
 import click
@@ -23,14 +25,15 @@ keys = {
 @click.command()
 @click.option("--base-url", default="https://nomnom.seattlein2025.org")
 @click.argument("perid")
-@click.argument("email")
 @click.argument("first_name")
 @click.argument("last_name")
+@click.argument("email")
+@click.option("--days", default=1)
 @click.option("--rights", default="hugo_nominate,hugo_vote")
 @click.option("--newperid", default=None)
-def main(base_url, perid, email, first_name, last_name, rights, newperid):
+def main(base_url, perid, first_name, last_name, email, days, rights, newperid):
     user_record = {
-        "exp": (datetime.now(timezone.utc) + timedelta(days=1)).timestamp(),
+        "exp": (datetime.now(timezone.utc) + timedelta(days=days)).timestamp(),
         "email": email,
         "perid": perid,
         "newperid": newperid,
@@ -46,6 +49,7 @@ def main(base_url, perid, email, first_name, last_name, rights, newperid):
 
     token = jwt.encode(user_record, key, algorithm="HS512")
 
+    print(json.dumps(user_record, indent=2), file=sys.stderr)
     print(f"{base_url}/controll-redirect/?r={token}")
 
 
