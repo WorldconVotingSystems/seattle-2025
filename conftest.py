@@ -40,5 +40,28 @@ def use_test_settings(settings):
 
 
 @pytest.fixture
+def user_factory():
+    from django.contrib.auth import get_user_model
+
+    UserModel = get_user_model()
+
+    def create_user(username=None, **kwargs):
+        username = username or uuid.uuid4().hex
+        return UserModel.objects.create(username=username, **kwargs)
+
+    return create_user
+
+
+@pytest.fixture
+def controll_person_factory():
+    from seattle_2025_app.models import ControllPerson
+
+    def create_controll_person(user, perid=None, newperid=None):
+        return ControllPerson.objects.create(user=user, perid=perid, newperid=newperid)
+
+    return create_controll_person
+
+
+@pytest.fixture
 def convention() -> ConventionConfiguration:
     return svcs_from().get(ConventionConfiguration)

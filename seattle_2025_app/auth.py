@@ -39,14 +39,58 @@ class ControllBackend(BaseBackend):
             sentry_sdk.capture_exception(e)
             return None
 
-        # existing user?
-        matches = ControllPerson.objects.filter(
-            perid=token.get("perid"), newperid=token.get("newperid")
-        )
-        if matches.exists():
-            return matches.first().user
-        else:
-            return None
+        # Algorithm for authentication:
+        #
+        # if given perid…
+        #    look for perid in that table, if found
+        #       return id
+        #       exit
+        #    if also given newperid
+        #       look for newperid in that table, if found
+        #          update table row to set perid
+        #          return id
+        #          exit
+        #    else
+        #       create new row
+        #       set perid in that row
+        #       return id
+        #       exit
+        # else given newperid
+        #    look for newperid in that table
+        #    if round
+        #       return id
+        #       exit
+        #    else
+        #       create new row
+        #       set newperid in that row
+        #       return id
+        #       exit
+
+        perid = token.get("perid")
+        newperid = token.get("newperid")
+
+        if perid:
+            matches = ControllPerson.objects.filter(perid=perid)
+            if matches.exists():
+                return matches.first().user
+
+            if newperid:
+                matches = ControllPerson.objects.filter(newperid=newperid)
+                if matches.exists():
+                    match = matches.first()
+                    match.perid = perid
+                    match.save()
+                    return match.user
+
+            # we don't perform creation in this, just lookups. We only save the perid
+            # for faster searches later.
+
+        elif newperid:
+            matches = ControllPerson.objects.filter(newperid=newperid)
+            if matches.exists():
+                return matches.first().user
+
+        return None
 
     def get_user(self, user_id):
         UserModel = get_user_model()
@@ -73,8 +117,8 @@ def create_member(
         # the token was incomplete; we can't create a user.
         return None
 
-    if perid is None:
-        # we can't create a user without a perid
+    if perid is None and newperid is None:
+        # we can't create a user without a perid or a newperid
         return None
 
     UserModel = get_user_model()
@@ -87,14 +131,15 @@ def create_member(
     )
 
     ControllPerson.objects.create(
-        perid=token.get("perid"),
-        newperid=token.get("newperid"),
+        perid=perid,
+        newperid=newperid,
         user=user,
     )
 
     member = nominate.NominatingMemberProfile.objects.create(
         user=user,
         preferred_name=full_name,
+        member_number=token.get("perid"),
     )
 
     # now we check for the rights, and assign the member to the right groups.
