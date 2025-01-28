@@ -25,7 +25,7 @@ license = {text = "MIT"}
 # social-auth-core = { path = "../social-core" }
 
 [tool.ruff.lint.isort]
-known-first-party = ["", "seattle_2025_app"]
+known-first-party = ["config", "seattle_2025_app"]
 
 [tool.uv]
 dev-dependencies = [
