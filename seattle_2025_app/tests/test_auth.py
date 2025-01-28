@@ -64,6 +64,32 @@ def test_authenticate_updates_perid_with_newperid(
     assert person.newperid == ONLY_NEWPERID  # Should remain unchanged
 
 
+def test_authenticate_updates_member_id_when_updating_perid(
+    db, user_factory, controll_person_factory, backend
+):
+    user = user_factory(with_convention_profile=True)
+
+    person = controll_person_factory(user=user, newperid=ONLY_NEWPERID)
+    assert person.perid is None
+
+    # Mock a token with both perid and newperid
+    token = jwt.encode(
+        {"perid": UPDATED_PERID, "newperid": ONLY_NEWPERID},
+        settings.CONTROLL_JWT_KEY,
+        algorithm="HS256",
+    )
+
+    # Run authentication
+    authenticated_user = backend.authenticate(None, token=token)
+
+    # Reload record from the database
+    person.refresh_from_db()
+
+    # Assertions
+    assert authenticated_user == person.user  # Should match the user already in DB
+    assert authenticated_user.convention_profile.member_number == UPDATED_PERID
+
+
 def test_authenticate_doesnt_create_new_row_for_perid(db, backend):
     # Mock a token with an unrecognized perid
     token = jwt.encode(

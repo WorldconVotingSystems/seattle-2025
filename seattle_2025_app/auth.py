@@ -5,6 +5,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.backends import BaseBackend
 from django.contrib.auth.models import AbstractUser, Group
 from django.db import transaction
+from django.db.models import ObjectDoesNotExist
 from django_svcs.apps import svcs_from
 from nomnom.convention import ConventionConfiguration
 from nomnom.nominate import models as nominate
@@ -80,6 +81,16 @@ class ControllBackend(BaseBackend):
                     match = matches.first()
                     match.perid = perid
                     match.save()
+
+                    # we also need to update the member number.
+                    try:
+                        convention_profile = match.user.convention_profile
+                        convention_profile.member_number = perid
+                        convention_profile.save()
+
+                    except ObjectDoesNotExist:
+                        pass
+
                     return match.user
 
             # we don't perform creation in this, just lookups. We only save the perid
