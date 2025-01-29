@@ -6,6 +6,7 @@ from django.contrib.auth.backends import BaseBackend
 from django.contrib.auth.models import AbstractUser, Group
 from django.db import transaction
 from django.db.models import ObjectDoesNotExist
+from django.http import HttpRequest
 from django_svcs.apps import svcs_from
 from nomnom.convention import ConventionConfiguration
 from nomnom.nominate import models as nominate
@@ -69,11 +70,16 @@ class ControllBackend(BaseBackend):
 
         perid = token.get("perid")
         newperid = token.get("newperid")
-
+        rights = token.get("rights", "").split(",")
         if perid:
             matches = ControllPerson.objects.filter(perid=perid)
             if matches.exists():
-                return matches.first().user
+                # update permissions for the user.
+                user = matches.first().user
+                changed = update_wsfs_permissions(request, rights, user)
+                if changed:
+                    user.save()
+                return user
 
             if newperid:
                 matches = ControllPerson.objects.filter(newperid=newperid)
@@ -99,7 +105,11 @@ class ControllBackend(BaseBackend):
         elif newperid:
             matches = ControllPerson.objects.filter(newperid=newperid)
             if matches.exists():
-                return matches.first().user
+                user = matches.first().user
+                changed = update_wsfs_permissions(request, rights, user)
+                if changed:
+                    user.save()
+                return user
 
         return None
 
@@ -115,7 +125,6 @@ class ControllBackend(BaseBackend):
 def create_member(
     request, token: dict[str, str]
 ) -> nominate.NominatingMemberProfile | None:
-    convention = svcs_from(request).get(ConventionConfiguration)
     try:
         perid = token["perid"]
         newperid = token["newperid"]
@@ -158,7 +167,20 @@ def create_member(
     )
 
     # now we check for the rights, and assign the member to the right groups.
+    changed = update_wsfs_permissions(request, rights, user)
+
+    if changed:
+        user.save()
+
+    return member
+
+
+def update_wsfs_permissions(
+    request: HttpRequest, rights: list[str], user: AbstractUser
+) -> bool:
     changed = False
+
+    convention = svcs_from(request).get(ConventionConfiguration)
     if "hugo_nominate" in rights:
         user.groups.add(Group.objects.get(name=convention.nominating_group))
         changed = changed or True
@@ -167,10 +189,7 @@ def create_member(
         user.groups.add(Group.objects.get(name=convention.voting_group))
         changed = changed or True
 
-    if changed:
-        user.save()
-
-    return member
+    return changed
 
 
 def user_info_from_user(user: AbstractUser):

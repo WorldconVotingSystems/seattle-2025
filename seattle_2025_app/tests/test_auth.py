@@ -90,6 +90,60 @@ def test_authenticate_updates_member_id_when_updating_perid(
     assert authenticated_user.convention_profile.member_number == UPDATED_PERID
 
 
+def test_authenticate_by_perid_updates_wsfs_rights(
+    db, user_factory, controll_person_factory, backend, convention
+):
+    user = user_factory()
+
+    person = controll_person_factory(user=user, perid=EXISTING_PERID)
+
+    # Mock a token with both perid and newperid
+    token = jwt.encode(
+        {"perid": EXISTING_PERID, "newperid": None, "rights": "hugo_nominate"},
+        settings.CONTROLL_JWT_KEY,
+        algorithm="HS256",
+    )
+
+    # Run authentication
+    authenticated_user = backend.authenticate(None, token=token)
+
+    # Reload record from the database
+    person.refresh_from_db()
+
+    # Assertions
+    assert authenticated_user == person.user  # Should match the user already in DB
+    assert convention.nominating_group in person.user.groups.values_list(
+        "name", flat=True
+    )
+
+
+def test_authenticate_by_newperid_updates_wsfs_rights(
+    db, user_factory, controll_person_factory, backend, convention
+):
+    user = user_factory()
+
+    person = controll_person_factory(user=user, newperid=EXISTING_NEWPERID)
+
+    # Mock a token with both perid and newperid
+    token = jwt.encode(
+        {"perid": None, "newperid": EXISTING_NEWPERID, "rights": "hugo_nominate"},
+        settings.CONTROLL_JWT_KEY,
+        algorithm="HS256",
+    )
+
+    # Run authentication
+    authenticated_user = backend.authenticate(None, token=token)
+
+    # Reload record from the database
+    person.refresh_from_db()
+
+    # Assertions
+    assert authenticated_user == person.user  # Should match the user already in DB
+    assert convention.nominating_group in person.user.groups.values_list(
+        "name", flat=True
+    )
+
+
 def test_authenticate_doesnt_create_new_row_for_perid(db, backend):
     # Mock a token with an unrecognized perid
     token = jwt.encode(

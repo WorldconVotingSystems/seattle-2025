@@ -14,6 +14,14 @@ icecream.install()
 logging.disable(logging.CRITICAL)
 
 
+@pytest.fixture(scope="session")
+def django_db_setup(django_db_setup, django_db_blocker):
+    from django.core.management import call_command
+
+    with django_db_blocker.unblock():
+        call_command("loaddata", "-v3", "all/0001-permissions.json")
+
+
 @pytest.fixture(autouse=True)
 def use_test_settings(settings):
     settings.DEBUG = False
