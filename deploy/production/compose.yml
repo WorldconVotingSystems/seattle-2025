@@ -103,6 +103,36 @@ services:
       retries: 5
       start_period: 5s
 
+  # This container and Dozzle provide a logging endpoint access over my personal tailnet,
+  # so that I can view the container logs on this host without ssh as needed.
+  tailscale-sidecar:
+    hostname: nomnom-seattle2025-prod-logs
+    volumes:
+      - tailscale-data:/var/lib/tailscale
+    devices:
+      - /dev/net/tun
+    cap_add: # Required for tailscale to work
+      - net_admin
+      - sys_module
+    environment:
+      - TS_SERVE_PORT=8080
+    image: ghcr.io/offbyone/sidecar:main
+
+  dozzle:
+    container_name: dozzle
+    image: amir20/dozzle:latest
+    network_mode: "service:tailscale-sidecar"
+    restart: unless-stopped
+    environment:
+      DOZZLE_HOSTNAME: "nomnom-seattle2025-prod-logs"
+      DOZZLE_AUTH_PROVIDER: forward-proxy
+      DOZZLE_AUTH_HEADER_USER: "Tailscale-User-Login"
+      DOZZLE_AUTH_HEADER_NAME: "Tailscale-User-Name"
+      DOZZLE_ENABLE_ACTIONS: "false"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
 volumes:
   db-data:
   staticfiles:
+  tailscale-data:
