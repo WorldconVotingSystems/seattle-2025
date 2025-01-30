@@ -105,12 +105,20 @@ h6 {
   color: var(--sea-cream);
   background-color: var(--sea-accent-6);
 }
+.btn:active {
+  --bs-btn-active-color: var(--sea-cream);
+  --bs-btn-active-bg: var(--sea-accent-6);
+}
 
 /**
  * Layout styles
  */
 
 .navbar {
+  z-index: 999;
+  position: fixed;
+  inset-inline: 0;
+  max-height: none;
   background-color: var(--sea-dark-blue) !important; /* !important needed to override bootstrap */
 }
 
@@ -122,9 +130,15 @@ h6 {
   flex-grow: 1;
 }
 
-.nav-logout {
+.navbar-mobile-toggle {
   margin-left: auto;
-  align-self: center;
+}
+
+@media (min-width: 992px) {
+  .nav-logout {
+    margin-left: auto;
+    align-self: center;
+  }
 }
 
 .nav-logout .btn {
