@@ -1,6 +1,14 @@
 {% load static i18n nomnom_filters %}
+<button
+    class="navbar-mobile-toggle d-lg-none btn"
+    id="navbarToggle"
+    aria-controls="navbar"
+    aria-expanded="false"
+>
+    Menu
+</button>
 <div class="d-flex">
-    <div class="collapse navbar-collapse w-100 w-lg-auto" id="navbarCollapse">
+    <div class="collapse navbar-collapse d-lg-block" id="navbar">
         <ul class="navbar-nav ml-lg-auto">
             {% if request.user.is_staff %}
                 <li class="nav-item dropdown">
@@ -39,3 +47,13 @@
         </ul>
     </div>
 </div>
+<script defer>
+    const toggleButton = document.getElementById('navbarToggle');
+    const nav = document.getElementById('navbar');
+    if (nav && toggleButton) {
+        toggleButton.addEventListener('click', () => {
+            nav.classList.toggle('show');
+            toggleButton.ariaExpanded = toggleButton.ariaExpanded !== 'true';
+        });
+    }
+</script>

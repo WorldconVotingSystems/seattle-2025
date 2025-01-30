@@ -122,9 +122,15 @@ h6 {
   flex-grow: 1;
 }
 
+.navbar-mobile-toggle {
+  margin-left: auto;
+}
+
+@media (min-width: 992px) {
 .nav-logout {
   margin-left: auto;
   align-self: center;
+  }
 }
 
 .nav-logout .btn {
