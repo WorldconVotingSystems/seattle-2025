@@ -7,10 +7,19 @@ import icecream
 import pytest
 from django_svcs.apps import svcs_from
 from nomnom.convention import ConventionConfiguration
+from nomnom.nominate.models import NominatingMemberProfile
 
 icecream.install()
 
 logging.disable(logging.CRITICAL)
+
+
+@pytest.fixture(scope="session")
+def django_db_setup(django_db_setup, django_db_blocker):
+    from django.core.management import call_command
+
+    with django_db_blocker.unblock():
+        call_command("loaddata", "-v3", "all/0001-permissions.json")
 
 
 @pytest.fixture(autouse=True)
@@ -46,8 +55,13 @@ def user_factory():
     UserModel = get_user_model()
 
     def create_user(username=None, **kwargs):
+        create_convention_profile = kwargs.pop("with_convention_profile", False)
+
         username = username or uuid.uuid4().hex
-        return UserModel.objects.create(username=username, **kwargs)
+        user = UserModel.objects.create(username=username, **kwargs)
+        if create_convention_profile:
+            user.convention_profile = NominatingMemberProfile.objects.create(user=user)
+        return user
 
     return create_user
 

@@ -12,27 +12,22 @@
         <ul class="navbar-nav ml-lg-auto">
             {% if request.user.is_staff %}
                 <li class="nav-item dropdown">
-                    <a class="nav-link" href="{% url "admin:index" %}">
-                        {% translate "Admin Dashboard" %}
-                    </a>
+                    <a class="nav-link" href="{% url "admin:index" %}">{% translate "Admin Dashboard" %}</a>
                 </li>
             {% endif %}
             <li class="nav-item dropdown text-primary">
-                <a class="nav-link" href="{{ CONVENTION_SITE_URL }}">
-                    {% translate "Seattle Worldcon 2025" %}
-                </a>
+                <a class="nav-link" href="{{ CONVENTION_SITE_URL }}">{% translate "Seattle Worldcon 2025" %}</a>
+            </li>
+            <li class="nav-item dropdown text-primary">
+                <a class="nav-link" href="https://reg.seattlein2025.org/">{% translate "Membership" %}</a>
             </li>
             {% if user.is_authenticated %}
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'election:index' %}">
-                        {% translate "Hugo Awards" %}
-                    </a>
+                    <a class="nav-link" href="{% url 'election:index' %}">{% translate "Hugo Awards" %}</a>
                 </li>
                 {% if ADVISORY_VOTES %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'advise:advisory_votes' %}">
-                            {% translate "Advisory Votes" %}
-                        </a>
+                        <a class="nav-link" href="{% url 'advise:advisory_votes' %}">{% translate "Advisory Votes" %}</a>
                     </li>
                 {% endif %}
                 <li class="nav-logout">
