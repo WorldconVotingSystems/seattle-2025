@@ -57,6 +57,19 @@ services:
     environment:
       <<: [*db, *redis, *staticfiles]
 
+  scheduler:
+    <<: [*image, *boot]
+    command: /app/docker/start.sh beat
+    links:
+      - db
+      - redis
+    env_file:
+      - .env
+    environment:
+      <<: [*db, *redis, *staticfiles]
+    volumes:
+      - staticfiles:/staticfiles:ro
+
   boot:
     <<: *image
     command: /bin/bash /app/docker/start.sh bootstrap
