@@ -99,6 +99,8 @@ INSTALLED_APPS = [
     "nomnom.advise",
     # The hugo packet app
     "nomnom.hugopacket",
+    # EPH and Canonicalization
+    "nomnom.canonicalize",
 ]
 
 SITE_ID = 1
