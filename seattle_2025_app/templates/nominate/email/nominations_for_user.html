@@ -1,0 +1,21 @@
+{% load markdownify %}
+<h3>Dear {{ member.preferred_name }}</h3>
+{% if message %}{{ message }}{% endif %}
+{% for category, nominations in nominations %}
+    {% if forloop.first %}<p>Here are your {{ election.name }} nominations, as of {{ report_date }}</p>{% endif %}
+    {% for nomination in nominations %}
+        {% if forloop.first %}
+            <h4>Category: {{ category.name | markdownify:"admin-label" }}</h4>
+            <ul>
+            {% endif %}
+            <li>{{ nomination.pretty_fields }}</li>
+            {% if forloop.last %}</ul>{% endif %}
+    {% endfor %}
+{% empty %}
+    <p>
+        <b>You don't have any nominations.</b>
+    </p>
+{% endfor %}
+<p>
+    You can change your votes up until the deadline, which is 11:59 p.m. Pacific Daylight Time (UTC-7) on Friday, March 14, 2025, by visiting <a href="http://reg.seattlein2025.org/">http://reg.seattlein2025.org/</a>.
+</p>
