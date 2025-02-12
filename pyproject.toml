@@ -7,7 +7,7 @@ authors = []
 dependencies = [
     "django-svcs>=0.3.4",
     "granian>=1.6.3",
-    "nomnom-hugoawards~=2025.1",
+    "nomnom-hugoawards>=2025.1.0b1,<2026.0",
     "social-auth-app-django~=5.4",
     "django-fsm>=2.8.1",
     "django-celery>=3.1.17",
@@ -21,7 +21,7 @@ readme = "README.md"
 license = {text = "MIT"}
 
 [tool.uv.sources]
-nomnom-hugoawards = { path = "../nomnom", editable = true }
+# nomnom-hugoawards = { path = "../nomnom", editable = true }
 # nomnom-hugoawards = { path = "../nomnom", editable = true }
 # social-auth-core = { path = "../social-core" }
 
@@ -32,12 +32,14 @@ known-first-party = ["config", "seattle_2025_app"]
 dev-dependencies = [
     "djlint>=1.36.4",
     "factory-boy~=3.3.0",
+    "icecream>=2.1.4",
     "ipdb>=0.13.13",
     "pytest~=8.3.3",
     "pytest-check>=2.4.1",
     "pytest-django~=4.9.0",
     "pytest-xdist>=3.6.1",
     "ruff>=0.9.3",
+    "tenacity>=8.5.0",
 ]
 
 [tool.pytest.ini_options]

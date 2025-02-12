@@ -30,6 +30,7 @@ urlpatterns = (
         path("", nomnom.base.views.index, name="index"),
         path("e/", include("nomnom.nominate.urls", namespace="election")),
         path("convention/", include("seattle_2025_app.urls", namespace="convention")),
+        path("admin/action-forms/", include("django_admin_action_forms.urls")),
         path("admin/", admin.site.urls),
         path("", include("social_django.urls", namespace="social")),
         path("accounts/", include("django.contrib.auth.urls")),
