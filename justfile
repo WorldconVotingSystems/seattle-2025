@@ -7,6 +7,12 @@ serve_host := if env_var_or_default("CODESPACES", "false") == "true" { "0.0.0.0"
 @default:
     just --list
 
+refresh-nomnom:
+    # refresh nomnom, only. This is useful when you're working on nomnom itself,
+    # when we might have a source dependency on nomnom, but we want to bump the shipped
+    # version, possibly to a beta.
+    uv sync --no-sources --dev --prerelease=explicit --refresh -P nomnom-hugoawards
+
 bootstrap:
     #!/usr/bin/env bash
     set -eu -o pipefail

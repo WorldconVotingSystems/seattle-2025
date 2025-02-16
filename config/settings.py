@@ -78,6 +78,8 @@ INSTALLED_APPS = [
     "social_django",
     # Admin filtering enhancements
     "admin_auto_filters",
+    # Admin forms
+    "django_admin_action_forms",
     # Admin audit logging
     "logentry_admin",
     # Theming
@@ -99,6 +101,8 @@ INSTALLED_APPS = [
     "nomnom.advise",
     # The hugo packet app
     "nomnom.hugopacket",
+    # EPH and Canonicalization
+    "nomnom.canonicalize",
 ]
 
 SITE_ID = 1
