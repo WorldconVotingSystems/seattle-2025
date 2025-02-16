@@ -2,7 +2,7 @@ version = 1
 requires-python = ">=3.13.0, <3.14.0"
 
 [options]
-prerelease-mode = "allow"
+prerelease-mode = "explicit"
 
 [[package]]
 name = "amqp"
@@ -154,7 +154,7 @@ wheels = [
 
 [[package]]
 name = "celery"
-version = "5.5.0rc4"
+version = "5.4.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "billiard" },
@@ -164,11 +164,12 @@ dependencies = [
     { name = "click-repl" },
     { name = "kombu" },
     { name = "python-dateutil" },
+    { name = "tzdata" },
     { name = "vine" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/59/73/616911c818cd58394ffced6c7bdc0aaa9581ec560955d3fea3936374a965/celery-5.5.0rc4.tar.gz", hash = "sha256:de8594a08186e94a99227c3fd99d5c850c9f49ae0d8a68deac27b0fc89c31149", size = 1648554 }
+sdist = { url = "https://files.pythonhosted.org/packages/8a/9c/cf0bce2cc1c8971bf56629d8f180e4ca35612c7e79e6e432e785261a8be4/celery-5.4.0.tar.gz", hash = "sha256:504a19140e8d3029d5acad88330c541d4c3f64c789d85f94756762d8bca7e706", size = 1575692 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/bc/69/b3bf6db3f41b4405116e81aa88874e9da3af2396c2da2c80532e9e0c9522/celery-5.5.0rc4-py3-none-any.whl", hash = "sha256:414bf75791eb8b060f417d030d38523614e8b02aa1bd3b60df5dacdf69ef8056", size = 436272 },
+    { url = "https://files.pythonhosted.org/packages/90/c4/6a4d3772e5407622feb93dd25c86ce3c0fee746fa822a777a627d56b4f2a/celery-5.4.0-py3-none-any.whl", hash = "sha256:369631eb580cf8c51a82721ec538684994f8277637edde2dfc0dacd73ed97f64", size = 425983 },
 ]
 
 [[package]]
@@ -351,11 +352,11 @@ wheels = [
 
 [[package]]
 name = "defusedxml"
-version = "0.8.0rc2"
+version = "0.7.1"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/5e/3b/b8849dcc3f96913924137dc4ea041d74aa513a3c5dda83d8366491290c74/defusedxml-0.8.0rc2.tar.gz", hash = "sha256:138c7d540a78775182206c7c97fe65b246a2f40b29471e1a2f1b0da76e7a3942", size = 52575 }
+sdist = { url = "https://files.pythonhosted.org/packages/0f/d5/c66da9b79e5bdb124974bfe172b4daf3c984ebd9c2a06e2b8a4dc7331c72/defusedxml-0.7.1.tar.gz", hash = "sha256:1bb3032db185915b62d7c6209c5a8792be6a32ab2fedacc84e01b52c51aa3e69", size = 75520 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/5d/c7/6b4ad89ca6f7732ff97ce5e9caa6fe739600d26c5d53c20d0bf9abb79ec5/defusedxml-0.8.0rc2-py2.py3-none-any.whl", hash = "sha256:1c812964311154c3bf4aaf3bc1443b31ee13530b7f255eaaa062c0553c76103d", size = 25756 },
+    { url = "https://files.pythonhosted.org/packages/07/6c/aa3f2f849e01cb6a001cd8554a88d4c77c5c1a31c95bdf1cf9301e6d9ef4/defusedxml-0.7.1-py2.py3-none-any.whl", hash = "sha256:a352e7e428770286cc899e2542b6cdaedb2b4953ff269a210103ec58f6198a61", size = 25604 },
 ]
 
 [[package]]
@@ -960,16 +961,16 @@ wheels = [
 
 [[package]]
 name = "kombu"
-version = "5.5.0rc2"
+version = "5.4.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "amqp" },
     { name = "tzdata" },
     { name = "vine" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/94/64/cc39be8782edd463a7c6c7c2505fd67d15452d5f1a310981da5c6bdf2275/kombu-5.5.0rc2.tar.gz", hash = "sha256:f581f3b2945a46d5de540a8fde920e87725308cfed6bdeed6983fa4124879cd0", size = 458112 }
+sdist = { url = "https://files.pythonhosted.org/packages/38/4d/b93fcb353d279839cc35d0012bee805ed0cf61c07587916bfc35dbfddaf1/kombu-5.4.2.tar.gz", hash = "sha256:eef572dd2fd9fc614b37580e3caeafdd5af46c1eff31e7fba89138cdb406f2cf", size = 442858 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/cf/9b/8384970b77ec1cd9f106be81a5a2f34da2674df3266c35746720127039fc/kombu-5.5.0rc2-py3-none-any.whl", hash = "sha256:213dc124de2a9dada467aa3387c638d8594e91a9dff2dcf6206cd9c6bcf84a5d", size = 208778 },
+    { url = "https://files.pythonhosted.org/packages/87/ec/7811a3cf9fdfee3ee88e54d08fcbc3fabe7c1b6e4059826c59d7b795651c/kombu-5.4.2-py3-none-any.whl", hash = "sha256:14212f5ccf022fc0a70453bb025a1dcc32782a588c49ea866884047d66e14763", size = 201349 },
 ]
 
 [[package]]
@@ -1032,7 +1033,7 @@ wheels = [
 
 [[package]]
 name = "nomnom-hugoawards"
-version = "2025.1.0b6"
+version = "2025.1.0b7"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "boto3" },
@@ -1074,9 +1075,9 @@ dependencies = [
     { name = "svcs" },
     { name = "whitenoise" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/15/96/9b592a28a2f5575b8181059c63b004226ac90bf7cd7e56c100e78959ab22/nomnom_hugoawards-2025.1.0b6.tar.gz", hash = "sha256:60516ee09a9cef36d688a31a0ebe18d43130fecb53a568184d52610462da1a1c", size = 1855243 }
+sdist = { url = "https://files.pythonhosted.org/packages/45/8d/bc1ad6460a0945fd2f4fa0ef5a7151f212f2c55bdaef5b8e0058d39ba7b1/nomnom_hugoawards-2025.1.0b7.tar.gz", hash = "sha256:0401f43e320ab1c07f64382452455f79bb0a2f8862da32fb25edaadd33fc1cbc", size = 1856347 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/5f/2c/6b7d859b9a8a0431144dac15d8061b001c0c5cd546f8bd6a3ee9d57ac43b/nomnom_hugoawards-2025.1.0b6-py3-none-any.whl", hash = "sha256:4b00f91152030e258cc050b39ea072c2843fdd43eab26b0ad2803e12f4ce1b6e", size = 1650656 },
+    { url = "https://files.pythonhosted.org/packages/0f/4f/87d3fea6bbf40297bba9e99c61e476faf3f987dccb012661e4ba14b5979d/nomnom_hugoawards-2025.1.0b7-py3-none-any.whl", hash = "sha256:e9ff60155e4aa3912e5d5e9fd0f520d690f06b9a2a636ffff76aa08304461b38", size = 1650651 },
 ]
 
 [[package]]
@@ -1374,11 +1375,11 @@ wheels = [
 
 [[package]]
 name = "redis"
-version = "5.3.0b3"
+version = "5.2.1"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/cb/b8/9727acc729f3fdda622d4dc39940fa93e59f4bf17a261e2505432ce057b8/redis-5.3.0b3.tar.gz", hash = "sha256:7c1968e510543ac911352b34ba02968e120b5d2ccbc1ac4544b819a3096abeb8", size = 4621432 }
+sdist = { url = "https://files.pythonhosted.org/packages/47/da/d283a37303a995cd36f8b92db85135153dc4f7a8e4441aa827721b442cfb/redis-5.2.1.tar.gz", hash = "sha256:16f2e22dff21d5125e8481515e386711a34cbec50f0e44413dd7d9c060a54e0f", size = 4608355 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/3e/41/5edd015fada2003ecebd918edfca1ed3e841d5a78ac4e74b76e2a22721ef/redis-5.3.0b3-py3-none-any.whl", hash = "sha256:7b7cb0a916e73a2279738ebac530481cb8db11fd25d0cfe2434f6ec846fc66f7", size = 270964 },
+    { url = "https://files.pythonhosted.org/packages/3c/5f/fa26b9b2672cbe30e07d9a5bdf39cf16e3b80b42916757c5f92bca88e4ba/redis-5.2.1-py3-none-any.whl", hash = "sha256:ee7e1056b9aea0f04c6c2ed59452947f34c4940ee025f5dd83e6a6418b6989e4", size = 261502 },
 ]
 
 [[package]]
@@ -1508,7 +1509,7 @@ requires-dist = [
     { name = "django-fsm", specifier = ">=2.8.1" },
     { name = "django-svcs", specifier = ">=0.3.4" },
     { name = "granian", specifier = ">=1.6.3" },
-    { name = "nomnom-hugoawards", specifier = ">=2025.1.0b4,<2026.0" },
+    { name = "nomnom-hugoawards", specifier = ">=2025.1.0b7,<2026.0" },
     { name = "pyjwt", specifier = ">=2.10.1" },
     { name = "sentry-sdk", specifier = ">=2.19.0" },
     { name = "social-auth-app-django", specifier = "~=5.4" },
@@ -1749,11 +1750,11 @@ wheels = [
 
 [[package]]
 name = "tzdata"
-version = "2024.2"
+version = "2025.1"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/e1/34/943888654477a574a86a98e9896bae89c7aa15078ec29f490fef2f1e5384/tzdata-2024.2.tar.gz", hash = "sha256:7d85cc416e9382e69095b7bdf4afd9e3880418a2413feec7069d533d6b4e31cc", size = 193282 }
+sdist = { url = "https://files.pythonhosted.org/packages/43/0f/fa4723f22942480be4ca9527bbde8d43f6c3f2fe8412f00e7f5f6746bc8b/tzdata-2025.1.tar.gz", hash = "sha256:24894909e88cdb28bd1636c6887801df64cb485bd593f2fd83ef29075a81d694", size = 194950 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/a6/ab/7e5f53c3b9d14972843a647d8d7a853969a58aecc7559cb3267302c94774/tzdata-2024.2-py2.py3-none-any.whl", hash = "sha256:a48093786cdcde33cad18c2555e8532f34422074448fbc874186f0abd79565cd", size = 346586 },
+    { url = "https://files.pythonhosted.org/packages/0f/dd/84f10e23edd882c6f968c21c2434fe67bd4a528967067515feca9e611e5e/tzdata-2025.1-py2.py3-none-any.whl", hash = "sha256:7e127113816800496f027041c570f50bcd464a020098a3b6b199517772303639", size = 346762 },
 ]
 
 [[package]]
