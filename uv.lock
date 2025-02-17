@@ -1033,7 +1033,7 @@ wheels = [
 
 [[package]]
 name = "nomnom-hugoawards"
-version = "2025.1.0"
+version = "2025.2.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "boto3" },
@@ -1075,9 +1075,9 @@ dependencies = [
     { name = "svcs" },
     { name = "whitenoise" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/63/07/cd1b62e3f884458f6fa7104048d7656035353403eb66e4bd15ebbf568f4d/nomnom_hugoawards-2025.1.0.tar.gz", hash = "sha256:1cb084aa6a489149e03c404ea1f3dd5b7511d5c7d4d035b709c31d0bc62d5881", size = 1856238 }
+sdist = { url = "https://files.pythonhosted.org/packages/a5/5a/8a524e1354401b393d378ebe76d80a549f9c189e4a0c2e8c611429638653/nomnom_hugoawards-2025.2.0.tar.gz", hash = "sha256:5788dccd4ab106e81b4c40c112707bfef9b57aeec3cc4ac0de680c33f74d61b5", size = 1857076 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/dc/31/8a0616fac5780e100bc738623b4cb345a602e0db33fc196cae34d668a743/nomnom_hugoawards-2025.1.0-py3-none-any.whl", hash = "sha256:860019f692fc4ec94eb9cfe84dcd950cb8894f5ab63f19c8e56e88360c0b0abb", size = 1650651 },
+    { url = "https://files.pythonhosted.org/packages/3f/55/90002bf1374540f454d71ff4627e1118cbdcfa6ce923e8461fb03da1a83e/nomnom_hugoawards-2025.2.0-py3-none-any.whl", hash = "sha256:f12cb6bb43d3240190ccc79fe5db53c80ebc65c9d620d91390d32f5a38a0b4ec", size = 1651025 },
 ]
 
 [[package]]
@@ -1509,7 +1509,7 @@ requires-dist = [
     { name = "django-fsm", specifier = ">=2.8.1" },
     { name = "django-svcs", specifier = ">=0.3.4" },
     { name = "granian", specifier = ">=1.6.3" },
-    { name = "nomnom-hugoawards", specifier = ">=2025.1.0,<2026.0" },
+    { name = "nomnom-hugoawards", specifier = ">=2025.2.0,<2026.0" },
     { name = "pyjwt", specifier = ">=2.10.1" },
     { name = "sentry-sdk", specifier = ">=2.19.0" },
     { name = "social-auth-app-django", specifier = "~=5.4" },
@@ -1531,15 +1531,15 @@ dev = [
 
 [[package]]
 name = "sentry-sdk"
-version = "2.21.0"
+version = "2.22.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "certifi" },
     { name = "urllib3" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/08/63/3f0e88709cf4af992e2813c27d8ba628a891db0805e3fcc6dc834e142c5b/sentry_sdk-2.21.0.tar.gz", hash = "sha256:a6d38e0fb35edda191acf80b188ec713c863aaa5ad8d5798decb8671d02077b6", size = 301965 }
+sdist = { url = "https://files.pythonhosted.org/packages/81/b6/662988ecd2345bf6c3a5c306a9a3590852742eff91d0a78a143398b816f3/sentry_sdk-2.22.0.tar.gz", hash = "sha256:b4bf43bb38f547c84b2eadcefbe389b36ef75f3f38253d7a74d6b928c07ae944", size = 303539 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/a4/18/7587660cb5e4d07134913d8e74137efcd4903fda873bf612c30eb34c7ab4/sentry_sdk-2.21.0-py2.py3-none-any.whl", hash = "sha256:7623cfa9e2c8150948a81ca253b8e2bfe4ce0b96ab12f8cd78e3ac9c490fd92f", size = 324096 },
+    { url = "https://files.pythonhosted.org/packages/12/7f/0e4459173e9671ba5f75a48dda2442bcc48a12c79e54e5789381c8c6a9bc/sentry_sdk-2.22.0-py2.py3-none-any.whl", hash = "sha256:3d791d631a6c97aad4da7074081a57073126c69487560c6f8bffcf586461de66", size = 325815 },
 ]
 
 [package.optional-dependencies]
