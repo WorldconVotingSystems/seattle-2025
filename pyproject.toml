@@ -27,6 +27,7 @@ nomnom-hugoawards = { path = "../nomnom", editable = true }
 known-first-party = ["config", "seattle_2025_app"]
 
 [tool.uv]
+prerelease = "explicit"
 dev-dependencies = [
     "djlint>=1.36.4",
     "factory-boy~=3.3.0",
