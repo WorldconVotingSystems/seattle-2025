@@ -238,6 +238,7 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       - validate
+      - merge
     steps:
       - uses: umahmood/pushover-actions@v1.1.0
         env:
@@ -247,4 +248,4 @@ jobs:
           status: ${{ job.status }}
           title: Seattle Image Updates
           message: |-
-            The Seattle docker image has been updated
+            The Seattle docker image has been updated: ${{ needs.merge.outputs.version }}
