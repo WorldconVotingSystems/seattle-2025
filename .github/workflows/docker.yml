@@ -233,3 +233,18 @@ jobs:
             echo "The status code was not 200. It was $status_code."
             exit 1
           fi
+
+  notify:
+    runs-on: ubuntu-latest
+    needs:
+      - validate
+    steps:
+      - uses: umahmood/pushover-actions@v1.1.0
+        env:
+          PUSHOVER_TOKEN: ${{ secrets.PUSHOVER_API_KEY }}
+          PUSHOVER_USER: ${{ secrets.PUSHOVER_USER_KEY }}
+        with:
+          status: ${{ job.status }}
+          title: Seattle Image Updates
+          message: |-
+            The Seattle docker image has been updated
