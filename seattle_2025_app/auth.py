@@ -1,3 +1,5 @@
+from typing import cast
+
 import jwt
 import sentry_sdk
 from django.conf import settings
@@ -73,9 +75,9 @@ class ControllBackend(BaseBackend):
         rights = token.get("rights", "").split(",")
         if perid:
             matches = ControllPerson.objects.filter(perid=perid)
-            if matches.exists():
+            if matched_person := matches.first():
                 # update permissions for the user.
-                user = matches.first().user
+                user = matched_person.user
                 changed = update_wsfs_permissions(request, rights, user)
                 if changed:
                     user.save()
@@ -83,29 +85,28 @@ class ControllBackend(BaseBackend):
 
             if newperid:
                 matches = ControllPerson.objects.filter(newperid=newperid)
-                if matches.exists():
-                    match = matches.first()
-                    match.perid = perid
-                    match.save()
+                if matched_person := matches.first():
+                    matched_person.perid = perid
+                    matched_person.save()
 
                     # we also need to update the member number.
                     try:
-                        convention_profile = match.user.convention_profile
+                        convention_profile = matched_person.user.convention_profile
                         convention_profile.member_number = perid
                         convention_profile.save()
 
                     except ObjectDoesNotExist:
                         pass
 
-                    return match.user
+                    return matched_person.user
 
             # we don't perform creation in this, just lookups. We only save the perid
             # for faster searches later.
 
         elif newperid:
             matches = ControllPerson.objects.filter(newperid=newperid)
-            if matches.exists():
-                user = matches.first().user
+            if matched_person := matches.first():
+                user = matched_person.user
                 changed = update_wsfs_permissions(request, rights, user)
                 if changed:
                     user.save()
@@ -145,26 +146,50 @@ def create_member(
 
     member_number = perid if perid else newperid
 
-    user = UserModel.objects.create(
+    user, created = UserModel.objects.get_or_create(
         username=create_username(perid, newperid),
-        email=email,
-        first_name=first_name,
-        last_name=last_name,
+        defaults=dict(
+            email=email,
+            first_name=first_name,
+            last_name=last_name,
+        ),
     )
+
+    # I know this will always be so, but the type checker doesn't.
+    user = cast(AbstractUser, user)
 
     sentry_sdk.set_user(user_info_from_user(user))
 
-    ControllPerson.objects.create(
-        perid=perid,
-        newperid=newperid,
-        user=user,
-    )
+    # is the user complete? We need a ControllPerson and NominatingMemberProfile
+    # even if we didn't create the user.
+    missing_controll_person = False
+    missing_convention_profile = False
+    if not created:
+        try:
+            user.controll_person  # type: ignore[reportAttributeAccessIssue]
+        except ObjectDoesNotExist:
+            missing_controll_person = True
 
-    member = nominate.NominatingMemberProfile.objects.create(
-        user=user,
-        preferred_name=full_name,
-        member_number=member_number,
-    )
+        try:
+            user.convention_profile  # type: ignore[reportAttributeAccessIssue]
+        except ObjectDoesNotExist:
+            missing_convention_profile = True
+
+    if created or missing_controll_person:
+        ControllPerson.objects.create(
+            perid=perid,
+            newperid=newperid,
+            user=user,
+        )
+
+    if created or missing_convention_profile:
+        member = nominate.NominatingMemberProfile.objects.create(
+            user=user,
+            preferred_name=full_name,
+            member_number=member_number,
+        )
+    else:
+        member = user.convention_profile  # type: ignore[reportAttributeAccessIssue]
 
     # now we check for the rights, and assign the member to the right groups.
     changed = update_wsfs_permissions(request, rights, user)
@@ -181,13 +206,25 @@ def update_wsfs_permissions(
     changed = False
 
     convention = svcs_from(request).get(ConventionConfiguration)
-    if "hugo_nominate" in rights:
-        user.groups.add(Group.objects.get(name=convention.nominating_group))
-        changed = changed or True
 
-    if "hugo_vote" in rights:
-        user.groups.add(Group.objects.get(name=convention.voting_group))
-        changed = changed or True
+    groups = Group.objects.filter(
+        name__in=[convention.nominating_group, convention.voting_group]
+    )
+    groups_by_name = {group.name: group for group in groups}
+    groups_by_right: dict[str, Group] = {
+        "hugo_nominate": groups_by_name[convention.nominating_group],
+        "hugo_vote": groups_by_name[convention.voting_group],
+    }
+
+    user_group_names = user.groups.values_list("name", flat=True)
+
+    for right, group in groups_by_right.items():
+        if right in rights and group.name not in user_group_names:
+            user.groups.add(group)
+            changed = changed or True
+        elif right not in rights and group.name in user_group_names:
+            user.groups.remove(group)
+            changed = changed or True
 
     return changed
 
