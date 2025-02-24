@@ -18,22 +18,18 @@
      }
 }
 
-nominations.staging.glasgow2024.org
-    redir https://nomnom-staging.seattlein2025.org{uri} permanent
-}
-
 nomnom-staging.seattlein2025.org {
     handle_errors {
         @error502 expression {http.error.status_code} == 502
         handle @error502 {
-            root    * /opt/nomnom-g24/proxy
+            root    * /opt/nomnom/seattle-2025/deploy/proxy
             rewrite * /502.html
             file_server
         }
 
         @error50x expression {http.error.status_code} >= 500 && {http.error.status_code} < 600
         handle @error50x {
-            root * /opt/nomnom-g24/proxy
+            root    * /opt/nomnom/seattle-2025/deploy/proxy
             rewrite * /50x.html
             file_server
         }
