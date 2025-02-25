@@ -1034,7 +1034,7 @@ wheels = [
 
 [[package]]
 name = "nomnom-hugoawards"
-version = "2025.2.4"
+version = "2025.2.5"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "boto3" },
@@ -1076,9 +1076,9 @@ dependencies = [
     { name = "svcs" },
     { name = "whitenoise" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/b8/bb/5620c8df11979acd1a5cbd42f65f20cb20d2d99ca535ae150cb14f6f4c05/nomnom_hugoawards-2025.2.4.tar.gz", hash = "sha256:97baba7377c329a94c92dec697d57b400a59d07b4e44527d25d7f0792aa7b631", size = 1860483 }
+sdist = { url = "https://files.pythonhosted.org/packages/4a/dc/90fd4a61553680ae04fa0eab4b32759a8d1e1bfdcdfb0c23bded897a19c2/nomnom_hugoawards-2025.2.5.tar.gz", hash = "sha256:ea26facf11d7bf9206964820d08840ce3714c0d233ce976daa9e5b56c7c7c98d", size = 1860510 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/3f/67/f1920bfbee502a9efd47258356afb7ae05d27dfcc2ffb43fd418e1553fdd/nomnom_hugoawards-2025.2.4-py3-none-any.whl", hash = "sha256:c22c223c6a5864aaf66c4a453527df0d719bce4240cfa646aae8b26defc4cd96", size = 1655172 },
+    { url = "https://files.pythonhosted.org/packages/9f/1a/863e12b6c9be743509e4aa64c80da948f134c5018b732423971a1f65a1ae/nomnom_hugoawards-2025.2.5-py3-none-any.whl", hash = "sha256:f7696e817210d9d5e04818c7c9810433e0840ef59ac3da902ea7e3281a542430", size = 1655194 },
 ]
 
 [[package]]
