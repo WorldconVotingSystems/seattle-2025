@@ -74,6 +74,15 @@ services:
       - db
       - redis
 
+  pgbouncer:
+    image: edoburu/pgbouncer
+    restart: always
+    volumes:
+      - ./pgbouncer:/etc/pgbouncer
+    healthcheck:
+      test: ["CMD", "pg_isready", "-h", "localhost"]
+    network_mode: host
+
   db:
     image: postgres:17.1
     volumes:
