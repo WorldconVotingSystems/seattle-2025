@@ -81,11 +81,26 @@ services:
     volumes:
       - staticfiles:/staticfiles
     depends_on:
+      pgbouncer:
+        condition: service_healthy
       db:
         condition: service_healthy
     links:
+      - pgbouncer
       - db
       - redis
+
+  pgbouncer:
+    image: edoburu/pgbouncer
+    restart: always
+    volumes:
+      - ./pgbouncer:/etc/pgbouncer:ro
+    ports:
+      - 5432
+    environment:
+      - POSTGRES_PASSWORD=${NOM_DB_PASSWORD}
+    healthcheck:
+      test: ["CMD", "pg_isready", "-h", "localhost"]
 
   db:
     image: postgres:17.1
