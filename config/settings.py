@@ -171,6 +171,7 @@ DATABASES = {
         "PASSWORD": cfg.db.password,
         "HOST": cfg.db.host,
         "PORT": str(cfg.db.port),
+        "DISABLE_SERVER_SIDE_CURSORS": True,
     }
 }
 
