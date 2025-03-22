@@ -306,6 +306,11 @@ MARKDOWNIFY = {
     },
 }
 
+MARKDOWN_EXTENSIONS = [
+    "pymdownx.tilde",
+]
+
+
 BOOTSTRAP5 = {
     "field_renderers": {
         "default": "django_bootstrap5.renderers.FieldRenderer",
