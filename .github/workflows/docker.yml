@@ -251,9 +251,23 @@ jobs:
         run: |
           docker compose -f deploy/staging/compose.yml config
 
+      - name: prepare the staging environment
+        run: |
+          # first run the bootup, attached; this will terminate and detach.
+          docker compose -f deploy/staging/compose.yml \
+            -p staging \
+            up \
+            boot \
+            --timeout=120
+
       - name: start the staging environment
         run: |
-          docker compose -f deploy/staging/compose.yml -p staging up --wait
+          # now start the whole stack
+          docker compose -f deploy/staging/compose.yml \
+            -p staging \
+            up \
+            --wait \
+            --wait-timeout=120
 
       - name: attempt to read the home page from the website
         run: |
