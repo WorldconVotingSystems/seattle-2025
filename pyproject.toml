@@ -15,6 +15,7 @@ dependencies = [
     "pyjwt>=2.10.1",
     "sentry-sdk>=2.19.0",
     "django-debug-toolbar>=5.0.1",
+    "pymdown-extensions>=10.14.3",
 ]
 requires-python = ">=3.13.0,<3.14.0"
 readme = "README.md"
