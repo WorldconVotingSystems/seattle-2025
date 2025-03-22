@@ -9,7 +9,7 @@ x-redis: &redis
   NOM_REDIS_HOST: redis
   NOM_REDIS_PORT: 6379
 x-db: &db
-  NOM_DB_HOST: pgbouncer
+  NOM_DB_HOST: db
   NOM_DB_PORT: 5432
   NOM_DB_NAME: $NOM_DB_NAME
   NOM_DB_USER: $NOM_DB_USER
@@ -26,7 +26,7 @@ services:
       - "127.0.0.1:8000:8000"
     command: bash /app/docker/start.sh server
     links:
-      - pgbouncer
+      - db
       - redis
     env_file:
       - .env
@@ -50,25 +50,12 @@ services:
     <<: [*image, *boot]
     command: /app/docker/start.sh worker
     links:
-      - pgbouncer
-      - redis
-    env_file:
-      - .env
-    environment:
-      <<: [*db, *redis, *staticfiles]
-
-  scheduler:
-    <<: [*image, *boot]
-    command: /app/docker/start.sh beat
-    links:
       - db
       - redis
     env_file:
       - .env
     environment:
       <<: [*db, *redis, *staticfiles]
-    volumes:
-      - staticfiles:/staticfiles:ro
 
   boot:
     <<: *image
@@ -81,26 +68,11 @@ services:
     volumes:
       - staticfiles:/staticfiles
     depends_on:
-      pgbouncer:
-        condition: service_healthy
       db:
         condition: service_healthy
     links:
-      - pgbouncer
       - db
       - redis
-
-  pgbouncer:
-    image: edoburu/pgbouncer
-    restart: always
-    volumes:
-      - ./pgbouncer:/etc/pgbouncer:ro
-    ports:
-      - 5432
-    environment:
-      - POSTGRES_PASSWORD=${NOM_DB_PASSWORD}
-    healthcheck:
-      test: ["CMD", "pg_isready", "-h", "localhost"]
 
   db:
     image: postgres:17.1
