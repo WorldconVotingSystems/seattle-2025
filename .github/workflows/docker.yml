@@ -139,8 +139,24 @@ jobs:
           if-no-files-found: error
           retention-days: 1
 
+      - name: Save Docker image for validation
+        if: matrix.platform == 'linux/amd64'
+        run: |
+          image_id=$(docker images --format "{{.ID}}" | head -n 1)
+          docker save $image_id -o /tmp/docker-image.tar
+          echo "IMAGE_ID=$image_id" >> $GITHUB_ENV
+
+      - name: Upload Docker image artifact
+        if: matrix.platform == 'linux/amd64'
+        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
+        with:
+          name: docker-image
+          path: /tmp/docker-image.tar
+          retention-days: 1
+
   merge:
     runs-on: ubuntu-latest
+    if: github.event.pull_request.head.repo.full_name == github.repository
     permissions:
       packages: write
       # This is used to complete the identity challenge
@@ -197,23 +213,40 @@ jobs:
       packages: read
 
     env:
-      NOMNOM_VERSION: ${{ needs.merge.outputs.version }}
+      NOMNOM_VERSION: ${{ needs.merge.outputs.version || 'local' }}
 
     needs:
-      - merge
+      - build
 
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           persist-credentials: false
 
+      - name: Download Docker image
+        uses: actions/download-artifact@cc203385981b70ca67e1cc392babf9cc229d5806 # v4.1.9
+        with:
+          name: docker-image
+          path: /tmp
+
+      - name: Load Docker image
+        run: |
+          docker load -i /tmp/docker-image.tar
+          image_id=$(docker images --format "{{.ID}}" | head -n 1)
+          echo "Using image ID: $image_id"
+          # Tag the image with local tag for compose
+          docker tag $image_id seattle-2025:local
+
       - name: copy the environment
         run: |
           cp deploy/staging/.env.template deploy/staging/.env
+          echo "NOMNOM_IMAGE=seattle-2025" >> deploy/staging/.env
+          echo "NOMNOM_VERSION=local" >> deploy/staging/.env
 
-      - name: pull the staging images
-        run: |
-          docker compose -f deploy/staging/compose.yml -p staging pull
+      # - name: Set NOMNOM_IMAGE in environment
+      #   run: |
+      #     echo "NOMNOM_IMAGE=seattle-2025" >> $GITHUB_ENV
+      #     echo "NOMNOM_VERSION=local" >> $GITHUB_ENV
 
       - name: start the staging environment
         run: |
@@ -238,7 +271,8 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       - validate
-      - merge
+      - prepare
+    if: needs.prepare.outputs.can_push_images == 'true'
     steps:
       - uses: umahmood/pushover-actions@5da31193f672e7418804bdb51836bdf20f393c8f # v1.1.0
         env:
@@ -248,4 +282,4 @@ jobs:
           status: ${{ job.status }}
           title: Seattle Image Updates
           message: |-
-            The Seattle docker image has been updated: ${{ needs.merge.outputs.version }}
+            The Seattle docker image has been updated
