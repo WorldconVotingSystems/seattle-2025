@@ -247,6 +247,9 @@ jobs:
       #   run: |
       #     echo "NOMNOM_IMAGE=seattle-2025" >> $GITHUB_ENV
       #     echo "NOMNOM_VERSION=local" >> $GITHUB_ENV
+      - name: show the compose configuration for debugging
+        run: |
+          docker compose -f deploy/staging/compose.yml config
 
       - name: start the staging environment
         run: |
