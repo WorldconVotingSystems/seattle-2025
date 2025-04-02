@@ -1,6 +1,6 @@
 name: "seattle-2025"
 x-image: &image
-  image: ghcr.io/worldconvotingsystems/seattle-2025:${NOMNOM_VERSION:-main}
+  image: ${NOMNOM_IMAGE:-ghcr.io/worldconvotingsystems/seattle-2025}:${NOMNOM_VERSION:-main}
 x-boot: &boot
   depends_on:
     boot:
