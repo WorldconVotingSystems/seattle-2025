@@ -180,6 +180,8 @@ if not DEBUG:
     CONN_HEALTH_CHECKS = True
     CONN_MAX_AGE = 600
 
+HUGOPACKET_AWS_REGION = "sfo3"
+
 CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.redis.RedisCache",
