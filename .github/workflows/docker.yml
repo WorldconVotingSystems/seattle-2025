@@ -42,14 +42,29 @@ jobs:
           echo "This is a pull request from an external repository. Disabling image push."
           echo "CAN_PUSH_IMAGES=false" >> "$GITHUB_ENV"
 
+
+          # if we have a named ref (branch) use that, otherwise use the SHA
+          if [[ ${{ github.ref }} == refs/heads/* ]]; then
+             BRANCH_NAME=$(echo ${{ github.ref }} | sed 's#refs/heads/##')
+             echo "REGISTRY_TAG=$BRANCH_NAME" >> "$GITHUB_ENV"
+          else
+             SHA=${{ github.sha }}
+             echo "REGISTRY_TAG=$SHA" >> "$GITHUB_ENV"
+          fi
+
       - name: persist configuration
         id: persist
         run: |
-          echo "can_push_images=$CAN_PUSH_IMAGES" >> "$GITHUB_OUTPUT"
-          echo "registry_image=$REGISTRY_IMAGE_LC" >> "$GITHUB_OUTPUT"
+          {
+              echo "can_push_images=$CAN_PUSH_IMAGES"
+              echo "registry_image=$REGISTRY_IMAGE_LC"
+              echo "registry_tag=$REGISTRY_TAG"
+          } >> "$GITHUB_OUTPUT"
+
     outputs:
       can_push_images: ${{ steps.persist.outputs.can_push_images }}
       registry_image: ${{ steps.persist.outputs.registry_image }}
+      registry_tag: ${{ steps.persist.outputs.registry_tag }}
 
   build:
     runs-on: ubuntu-latest
@@ -64,6 +79,7 @@ jobs:
     env:
       CAN_PUSH_IMAGES: ${{ needs.prepare.outputs.can_push_images }}
       REGISTRY_IMAGE: ${{ needs.prepare.outputs.registry_image }}
+      REGISTRY_TAG: ${{ needs.prepare.outputs.registry_tag }}
       PLATFORM: linux/amd64
 
     steps:
@@ -107,28 +123,17 @@ jobs:
             type=semver,pattern={{version}}
             type=sha
 
-      - name: Build and push by digest
+      - name: Build and push
         id: build
         uses: docker/build-push-action@471d1dc4e07e5cdedd4c2171150001c434f0b7a4 # v6.15.0
         with:
           context: .
-          load: true # we need to load so we can save later
+          load: true # we need to load so we can save later for validation
           push: ${{ env.CAN_PUSH_IMAGES == 'true' }}
+          # use the branch name as the tag, if we have it, otherwise use the SHA
+          tag: ${{ env.REGISTRY_IMAGE }}:${{ env.REGISTRY_TAG }}
           platforms: ${{ env.PLATFORM }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-
-      - name: Build and load for validation
-        id: load
-        uses: docker/build-push-action@471d1dc4e07e5cdedd4c2171150001c434f0b7a4 # v6.15.0
-        with:
-          context: .
-          load: true # we need to load so we can save later
-          push: false
-          platforms: ${{ env.PLATFORM }}
-          labels: ${{ steps.meta.outputs.labels }}
-          outputs: type=image,name=${{ env.REGISTRY_IMAGE }},push-by-digest=true,name-canonical=true,push=false
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
