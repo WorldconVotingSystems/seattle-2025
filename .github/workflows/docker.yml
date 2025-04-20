@@ -138,7 +138,7 @@ jobs:
 
       - name: Save Docker image for validation
         run: |
-          image_id=${{ steps.load.outputs.imageid }}
+          image_id=${{ steps.build.outputs.imageid }}
           docker save "$image_id" -o /tmp/docker-image.tar
 
       - name: Upload Docker image artifact
