@@ -130,7 +130,7 @@ jobs:
           load: true # we need to load so we can save later for validation
           push: ${{ env.CAN_PUSH_IMAGES == 'true' }}
           # use the branch name as the tag, if we have it, otherwise use the SHA
-          tag: ${{ env.REGISTRY_IMAGE }}:${{ env.REGISTRY_TAG }}
+          tags: "${{ env.REGISTRY_IMAGE }}:${{ env.REGISTRY_TAG }}"
           platforms: ${{ env.PLATFORM }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
