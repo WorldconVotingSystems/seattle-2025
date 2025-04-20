@@ -133,7 +133,7 @@ jobs:
           set -x
           digest=${{ steps.build.outputs.digest }}
           docker tag ${{ steps.build.outputs.imageid }} ${{ env.REGISTRY_IMAGE }}:for-ci
-          docker push ${{ env.REGISTRY_IMAGE }}:${digest}
+          docker push ${{ env.REGISTRY_IMAGE }}@${digest}
 
       - name: Export digest
         run: |
