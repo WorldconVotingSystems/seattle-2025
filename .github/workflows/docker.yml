@@ -130,7 +130,7 @@ jobs:
         run: |
           digest=${{ steps.build.outputs.digest }}
           docker tag ${{ steps.build.outputs.imageid }} ${{ env.REGISTRY_IMAGE }}:${digest#sha256:}
-          docker push ${{ env.REGISTRY_IMAGE }}:${digest#sha256:}
+          docker push ${{ env.REGISTRY_IMAGE }}:${digest}
 
       - name: Export digest
         run: |
