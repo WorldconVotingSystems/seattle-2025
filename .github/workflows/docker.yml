@@ -205,6 +205,9 @@ jobs:
         working-directory: /tmp/digests
         if: ${{ env.CAN_PUSH_IMAGES }}
         run: |
+          jq -cr '.tags | map("-t " + .) | join(" ")' <<< "$DOCKER_METADATA_OUTPUT_JSON"
+          printf '${{ env.REGISTRY_IMAGE }}@sha256:%s ' *
+          set -x
           docker buildx imagetools create $(jq -cr '.tags | map("-t " + .) | join(" ")' <<< "$DOCKER_METADATA_OUTPUT_JSON") \
             $(printf '${{ env.REGISTRY_IMAGE }}@sha256:%s ' *)
 
