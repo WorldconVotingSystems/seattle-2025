@@ -128,7 +128,8 @@ jobs:
 
       - name: Push the exported digest
         run: |
-          docker push ${{ env.REGISTRY_IMAGE }}:${{ steps.build.outputs.digest }}
+          digest=${{ steps.build.outputs.digest }}
+          docker push ${{ env.REGISTRY_IMAGE }}:${digest#sha256:}
 
       - name: Export digest
         run: |
