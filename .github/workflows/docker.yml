@@ -126,6 +126,10 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
+      - name: Push the exported digest
+        run: |
+          docker push ${{ env.REGISTRY_IMAGE }}:${{ steps.build.outputs.digest }}
+
       - name: Export digest
         run: |
           mkdir -p /tmp/digests
