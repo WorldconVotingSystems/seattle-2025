@@ -146,13 +146,21 @@ jobs:
           docker save $image_id -o /tmp/docker-image.tar
           echo "IMAGE_ID=$image_id" >> $GITHUB_ENV
 
+      - name: Validate Docker image exists
+        if: matrix.platform == 'linux/amd64'
+        run: |
+          if [ ! -f /tmp/docker-image.tar ]; then
+            echo "ERROR: Docker image file not created."
+            exit 1
+          fi
+
       - name: Upload Docker image artifact
         if: matrix.platform == 'linux/amd64'
         uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
         with:
           name: docker-image
           path: /tmp/docker-image.tar
-          retention-days: 1
+          retention-days: 3
 
   merge:
     runs-on: ubuntu-latest
