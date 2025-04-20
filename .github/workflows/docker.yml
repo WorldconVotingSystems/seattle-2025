@@ -158,7 +158,7 @@ jobs:
 
   merge:
     runs-on: ubuntu-latest
-    if: needs.prepare.outputs.can_push_images == true
+    if: ${{ needs.prepare.outputs.can_push_images == 'true' }}
     permissions:
       packages: write
       # This is used to complete the identity challenge
