@@ -128,13 +128,6 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      - name: Push the exported digest
-        run: |
-          set -x
-          digest=${{ steps.build.outputs.digest }}
-          docker tag ${{ steps.build.outputs.imageid }} ${{ env.REGISTRY_IMAGE }}:for-ci
-          docker push ${{ env.REGISTRY_IMAGE }}@${digest}
-
       - name: Export digest
         run: |
           mkdir -p /tmp/digests
@@ -149,10 +142,23 @@ jobs:
           if-no-files-found: error
           retention-days: 1
 
+      - name: Build and load for validation
+        id: load
+        uses: docker/build-push-action@471d1dc4e07e5cdedd4c2171150001c434f0b7a4 # v6.15.0
+        with:
+          context: .
+          load: true # we need to load so we can save later
+          push: false
+          platforms: ${{ matrix.platform }}
+          labels: ${{ steps.meta.outputs.labels }}
+          outputs: type=image,name=${{ env.REGISTRY_IMAGE }},push-by-digest=true,name-canonical=true,push=false
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
       - name: Save Docker image for validation
         if: matrix.platform == 'linux/amd64'
         run: |
-          image_id=${{ steps.build.outputs.imageid }}
+          image_id=${{ steps.load.outputs.imageid }}
           docker save "$image_id" -o /tmp/docker-image.tar
 
       - name: Upload Docker image artifact
