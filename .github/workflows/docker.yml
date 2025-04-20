@@ -9,7 +9,9 @@ on:
   schedule:
     - cron: "41 14 * * *"
   push:
-    branches: ["main"]
+    branches:
+      - "main"
+      - "ci-*"
     # Publish semver tags as releases.
     tags: ["v*.*.*"]
   pull_request:
@@ -33,6 +35,15 @@ jobs:
           # Default to allowing push
           echo "CAN_PUSH_IMAGES=true" >> "$GITHUB_ENV"
 
+          # if we have a named ref (branch) use that, otherwise use the SHA
+          if [[ ${{ github.ref }} == refs/heads/* ]]; then
+             BRANCH_NAME=$(echo ${{ github.ref }} | sed 's#refs/heads/##')
+             echo "REGISTRY_TAG=$BRANCH_NAME" >> "$GITHUB_ENV"
+          else
+             SHA=${{ github.sha }}
+             echo "REGISTRY_TAG=$SHA" >> "$GITHUB_ENV"
+          fi
+
       - name: Check for push image permissions
         # if this is a pull request from another repository, then disable pushing
         if: github.event.pull_request.head.repo.full_name != github.repository && github.event_name == 'pull_request'
@@ -43,22 +54,20 @@ jobs:
       - name: persist configuration
         id: persist
         run: |
-          echo "can_push_images=$CAN_PUSH_IMAGES" >> "$GITHUB_OUTPUT"
-          echo "registry_image=$REGISTRY_IMAGE_LC" >> "$GITHUB_OUTPUT"
+          {
+              echo "can_push_images=$CAN_PUSH_IMAGES"
+              echo "registry_image=$REGISTRY_IMAGE_LC"
+              echo "registry_tag=$REGISTRY_TAG"
+          } >> "$GITHUB_OUTPUT"
+
     outputs:
       can_push_images: ${{ steps.persist.outputs.can_push_images }}
       registry_image: ${{ steps.persist.outputs.registry_image }}
+      registry_tag: ${{ steps.persist.outputs.registry_tag }}
 
   build:
     runs-on: ubuntu-latest
     needs: prepare
-    strategy:
-      fail-fast: false
-      matrix:
-        platform:
-          - linux/amd64
-          # we don't run this on ARM, no sense in building for it
-          # - linux/arm64
     permissions:
       contents: read
       packages: write
@@ -69,13 +78,14 @@ jobs:
     env:
       CAN_PUSH_IMAGES: ${{ needs.prepare.outputs.can_push_images }}
       REGISTRY_IMAGE: ${{ needs.prepare.outputs.registry_image }}
+      REGISTRY_TAG: ${{ needs.prepare.outputs.registry_tag }}
+      PLATFORM: linux/amd64
 
     steps:
       - name: Set up the platform
         run: |
           # set the platform pair for later
-          platform=${{ matrix.platform }}
-          echo "PLATFORM_PAIR=${platform//\//-}" >> "$GITHUB_ENV"
+          echo "PLATFORM_PAIR=${PLATFORM//\//-}" >> "$GITHUB_ENV"
 
       - name: Checkout repository
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
@@ -105,7 +115,6 @@ jobs:
         uses: docker/metadata-action@902fa8ec7d6ecbf8d84d538b9b233a880e428804 # v5.7.0
         with:
           images: ${{ env.REGISTRY_IMAGE }}
-
           tags: |
             type=ref,event=branch
             type=ref,event=tag
@@ -113,41 +122,26 @@ jobs:
             type=semver,pattern={{version}}
             type=sha
 
-      - name: Build and push by digest
+      - name: Build and push
         id: build
         uses: docker/build-push-action@471d1dc4e07e5cdedd4c2171150001c434f0b7a4 # v6.15.0
         with:
           context: .
-          load: true # we need to load so we can save later
+          load: true # we need to load so we can save later for validation
           push: ${{ env.CAN_PUSH_IMAGES == 'true' }}
-          platforms: ${{ matrix.platform }}
+          # use the branch name as the tag, if we have it, otherwise use the SHA
+          tags: "${{ env.REGISTRY_IMAGE }}:${{ env.REGISTRY_TAG }}"
+          platforms: ${{ env.PLATFORM }}
           labels: ${{ steps.meta.outputs.labels }}
-          outputs: type=image,name=${{ env.REGISTRY_IMAGE }},push-by-digest=true,name-canonical=true,push=${{ env.CAN_PUSH_IMAGES == 'true' }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      - name: Export digest
-        run: |
-          mkdir -p /tmp/digests
-          digest="${{ steps.build.outputs.digest }}"
-          touch "/tmp/digests/${digest#sha256:}"
-
-      - name: Upload digest
-        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
-        with:
-          name: digests-${{ env.PLATFORM_PAIR }}
-          path: /tmp/digests/*
-          if-no-files-found: error
-          retention-days: 1
-
       - name: Save Docker image for validation
-        if: matrix.platform == 'linux/amd64'
         run: |
           image_id=${{ steps.build.outputs.imageid }}
           docker save "$image_id" -o /tmp/docker-image.tar
 
       - name: Upload Docker image artifact
-        if: matrix.platform == 'linux/amd64'
         uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
         with:
           name: docker-image
@@ -155,58 +149,7 @@ jobs:
           retention-days: 3
     outputs:
       image_id: ${{steps.build.outputs.imageid}}
-
-  merge:
-    runs-on: ubuntu-latest
-    if: needs.prepare.outputs.can_push_images == true
-    permissions:
-      packages: write
-      # This is used to complete the identity challenge
-      # with sigstore/fulcio when running outside of PRs.
-      id-token: write
-    needs:
-      - prepare
-      - build
-    env:
-      CAN_PUSH_IMAGES: ${{ needs.prepare.outputs.can_push_images }}
-      REGISTRY_IMAGE: ${{ needs.prepare.outputs.registry_image }}
-
-    steps:
-      - name: Download digests
-        uses: actions/download-artifact@cc203385981b70ca67e1cc392babf9cc229d5806 # v4.1.9
-        with:
-          path: /tmp/digests
-          pattern: digests-*
-          merge-multiple: true
-
-      - name: Login to Docker Hub
-        uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567 # v3.3.0
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@b5ca514318bd6ebac0fb2aedd5d36ec1b5c232a2 # v3.10.0
-
-      - name: Docker meta
-        id: meta
-        uses: docker/metadata-action@902fa8ec7d6ecbf8d84d538b9b233a880e428804 # v5.7.0
-        with:
-          images: ${{ env.REGISTRY_IMAGE }}
-
-      - name: Create manifest list and push
-        working-directory: /tmp/digests
-        if: ${{ env.CAN_PUSH_IMAGES }}
-        run: |
-          docker buildx imagetools create $(jq -cr '.tags | map("-t " + .) | join(" ")' <<< "$DOCKER_METADATA_OUTPUT_JSON") \
-            $(printf '${{ env.REGISTRY_IMAGE }}@sha256:%s ' *)
-
-      - name: Inspect image
-        run: |
-          docker buildx imagetools inspect ${{ env.REGISTRY_IMAGE }}:${{ steps.meta.outputs.version }}
-    outputs:
-      version: ${{ steps.meta.outputs.version }}
+      tags: ${{ steps.meta.outputs.tags }}
 
   validate:
     runs-on: ubuntu-latest
@@ -267,8 +210,8 @@ jobs:
   notify:
     runs-on: ubuntu-latest
     needs:
+      - build
       - validate
-      - merge
     steps:
       - uses: umahmood/pushover-actions@5da31193f672e7418804bdb51836bdf20f393c8f # v1.1.0
         env:
@@ -278,4 +221,4 @@ jobs:
           status: ${{ job.status }}
           title: Seattle Image Updates
           message: |-
-            The Seattle docker image has been updated: ${{ needs.merge.outputs.version }}
+            The Seattle docker image has been updated: ${{ needs.build.outputs.tags }}
