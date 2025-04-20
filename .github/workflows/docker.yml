@@ -35,14 +35,6 @@ jobs:
           # Default to allowing push
           echo "CAN_PUSH_IMAGES=true" >> "$GITHUB_ENV"
 
-      - name: Check for push image permissions
-        # if this is a pull request from another repository, then disable pushing
-        if: github.event.pull_request.head.repo.full_name != github.repository && github.event_name == 'pull_request'
-        run: |
-          echo "This is a pull request from an external repository. Disabling image push."
-          echo "CAN_PUSH_IMAGES=false" >> "$GITHUB_ENV"
-
-
           # if we have a named ref (branch) use that, otherwise use the SHA
           if [[ ${{ github.ref }} == refs/heads/* ]]; then
              BRANCH_NAME=$(echo ${{ github.ref }} | sed 's#refs/heads/##')
@@ -51,6 +43,13 @@ jobs:
              SHA=${{ github.sha }}
              echo "REGISTRY_TAG=$SHA" >> "$GITHUB_ENV"
           fi
+
+      - name: Check for push image permissions
+        # if this is a pull request from another repository, then disable pushing
+        if: github.event.pull_request.head.repo.full_name != github.repository && github.event_name == 'pull_request'
+        run: |
+          echo "This is a pull request from an external repository. Disabling image push."
+          echo "CAN_PUSH_IMAGES=false" >> "$GITHUB_ENV"
 
       - name: persist configuration
         id: persist
