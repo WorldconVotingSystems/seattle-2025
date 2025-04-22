@@ -181,6 +181,7 @@ if not DEBUG:
     CONN_MAX_AGE = 600
 
 HUGOPACKET_AWS_REGION = "sfo3"
+HUGOPACKET_AWS_USE_CDN = True
 
 CACHES = {
     "default": {
