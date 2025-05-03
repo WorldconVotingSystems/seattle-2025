@@ -22,7 +22,7 @@ services:
     <<: [*image, *boot]
     volumes:
       - staticfiles:/staticfiles
-      - local:/data
+      - ./local/:/data
     ports:
       - "127.0.0.1:8000:8000"
     command: bash /app/docker/start.sh server
@@ -70,7 +70,7 @@ services:
       <<: [*db, *redis, *staticfiles]
     volumes:
       - staticfiles:/staticfiles:ro
-      - local:/data
+      - /local/:/data
 
   boot:
     <<: *image
@@ -82,7 +82,7 @@ services:
       - .env
     volumes:
       - staticfiles:/staticfiles
-      - local:/data
+      - ./local/:/data
     depends_on:
       pgbouncer:
         condition: service_healthy
