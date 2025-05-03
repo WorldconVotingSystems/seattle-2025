@@ -304,7 +304,8 @@ MARKDOWNIFY = {
     "admin-label": {
         # no block-level elements
         "WHITELIST_TAGS": bleach.sanitizer.ALLOWED_TAGS
-        | {"span"} - {"blockquote", "ol", "li", "ul"},
+        | {"span"} - {"blockquote", "ol", "li", "ul"}
+        | {"s"},
         "WHITELIST_ATTRS": ADMIN_MANAGED_ATTRIBUTES,
     },
 }
