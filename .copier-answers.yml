@@ -5,6 +5,6 @@ advisory_votes: true
 convention_name: Seattle Worldcon 2025
 domain_name: seattlein2025.org
 email_domain_name: seattlein2025.org
-hugo_packet_enabled: true
+hugo_packet_enabled: false
 project_slug: seattle-2025
 use_development: false
