@@ -3,8 +3,8 @@
 # This sets up servers both on the basic hostname and on the public-facing one.
 # Error pages are in the proxy directory.
 {
-	servers {
-		metrics
+	metrics {
+		per_host
 	}
 	log {
 		output file /var/log/caddy/caddy_main.log {
@@ -15,6 +15,10 @@
 		format json
 		level INFO
 	}
+}
+
+:2020 {
+	metrics
 }
 
 nomnom.seattlein2025.org {
