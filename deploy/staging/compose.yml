@@ -116,6 +116,8 @@ services:
       - sys_module
     environment:
       - TS_SERVE_PORT=8080
+    env_file:
+      - .env
     image: ghcr.io/offbyone/sidecar:main
 
   dozzle:
