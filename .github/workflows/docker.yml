@@ -198,6 +198,10 @@ jobs:
             -preauth \
             -ephemeral\
           )
+          # mask the key
+          echo "::add-mask::$ts_key"
+
+          # add the key to the compose environment
           echo "TS_AUTH_KEY=$ts_key" >> deploy/staging/.env
 
       - name: show the compose configuration for debugging
