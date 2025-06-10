@@ -106,7 +106,7 @@ services:
   # This container and Dozzle provide a logging endpoint access over my personal tailnet,
   # so that I can view the container logs on this host without ssh as needed.
   tailscale-sidecar:
-    hostname: nomnom-seattle2025-staging-logs
+    hostname: ${LOGGING_HOSTNAME:-nomnom-seattle2025-staging-logs}
     volumes:
       - tailscale-data:/var/lib/tailscale
     devices:
@@ -116,6 +116,8 @@ services:
       - sys_module
     environment:
       - TS_SERVE_PORT=8080
+    env_file:
+      - .env
     image: ghcr.io/offbyone/sidecar:main
 
   dozzle:

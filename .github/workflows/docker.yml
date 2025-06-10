@@ -153,12 +153,16 @@ jobs:
 
   validate:
     runs-on: ubuntu-latest
+    environment: testing
     permissions:
       contents: read
 
     needs:
       - prepare
       - build
+
+    env:
+      LOGGING_HOSTNAME: ${{ github.repository_owner }}-ci-logging
 
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
@@ -181,6 +185,24 @@ jobs:
           cp deploy/staging/.env.template deploy/staging/.env
           echo "NOMNOM_IMAGE=ci" >> deploy/staging/.env
           echo "NOMNOM_VERSION=local" >> deploy/staging/.env
+
+      - name: prepare an ephemeral tailscale authkey
+        env:
+          TS_API_CLIENT_ID: ${{ secrets.TS_API_CLIENT_ID }}
+          TS_API_CLIENT_SECRET: ${{ secrets.TS_API_CLIENT_SECRET }}
+        run: |
+          set -e
+          ts_key=$(
+            go run tailscale.com/cmd/get-authkey@v1.84.2 \
+            -tags tag:ci-gha \
+            -preauth \
+            -ephemeral\
+          )
+          # mask the key
+          echo "::add-mask::$ts_key"
+
+          # add the key to the compose environment
+          echo "TS_AUTH_KEY=$ts_key" >> deploy/staging/.env
 
       - name: show the compose configuration for debugging
         run: docker compose -f deploy/staging/compose.yml config
