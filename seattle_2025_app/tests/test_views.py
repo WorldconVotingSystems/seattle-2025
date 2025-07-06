@@ -5,7 +5,6 @@ import jwt
 import pytest
 from django.contrib.auth import get_user, get_user_model
 from django.contrib.auth.models import AbstractUser
-from django.core.management import call_command
 
 from seattle_2025_app.models import ControllPerson
 
@@ -36,12 +35,6 @@ syd_full_token = {
     "resType": "fullRights",
     "rights": "hugo_nominate,hugo_vote",
 }
-
-
-@pytest.fixture(scope="session")
-def django_db_setup(django_db_setup, django_db_blocker):
-    with django_db_blocker.unblock():
-        call_command("loaddata", "-v3", "all/0001-permissions.json")
 
 
 @pytest.fixture(name="make_token")
@@ -191,7 +184,7 @@ def test_new_member_permission(
     )
 
     user: AbstractUser = get_user(client)
-    user_group_names = [g.name for g in user.groups.all()]
+    user_group_names = user.groups.values_list("name", flat=True)
     assert (convention.nominating_group in user_group_names) == can_nominate
     assert (convention.voting_group in user_group_names) == can_vote
 

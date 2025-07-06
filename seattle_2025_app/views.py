@@ -2,12 +2,14 @@ import jwt
 import sentry_sdk
 from django.conf import settings
 from django.contrib.auth import authenticate, login
+from django.db import transaction
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect, render
 
 from .auth import create_member
 
 
+@transaction.atomic
 def controll_redirect(request: HttpRequest) -> HttpResponse:
     # only allow GET methods
     if request.method != "GET":

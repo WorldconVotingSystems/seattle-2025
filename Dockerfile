@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1.9
-FROM ubuntu:noble AS build
+FROM python:3.13-bookworm AS build
 
 # The following does not work in Podman unless you build in Docker
 # compatibility mode: <https://github.com/containers/podman/issues/8477>
@@ -17,9 +17,7 @@ apt-get install -qyy \
     build-essential \
     rsync \
     ca-certificates \
-    curl \
-    python3-setuptools \
-    python3.12-dev
+    curl
 EOT
 
 # Security-conscious organizations should package/review uv themselves.
@@ -61,13 +59,18 @@ EOT
 # Now install the APPLICATION from `/src` without any dependencies.
 # `/src` will NOT be copied into the runtime container.
 # LEAVE THIS OUT if your application is NOT a proper Python package.
-# We can’t use `uv sync` here because that only does editable installs:
-# <https://github.com/astral-sh/uv/issues/5792>
 COPY . /src
+RUN --mount=type=cache,target=/root/.cache <<EOT
+cd /src
+uv sync \
+    --no-editable \
+    --no-sources \
+    --prerelease=explicit
+EOT
 
 # Copy in the Django stuff, too:
 RUN <<EOT
-rsync -av /src/manage.py /src/.env.dockertest /src/config /src/seattle_2025_app /app/
+rsync -av /src/manage.py /app/
 EOT
 
 # Copy in the docker scripts
@@ -78,7 +81,7 @@ EOT
 
 ##########################################################################
 
-FROM ubuntu:noble AS run
+FROM python:3.13-bookworm AS run
 SHELL ["sh", "-exc"]
 
 # add the application virtualenv to search path.
@@ -101,9 +104,8 @@ apt-get update -qy
 apt-get install -qyy \
     -o APT::Install-Recommends=false \
     -o APT::Install-Suggests=false \
+    ca-certificates \
     gettext \
-    python3.12 \
-    libpython3.12 \
     python-is-python3 \
     libpcre3 \
     libxml2 \
@@ -138,16 +140,6 @@ ENV DJANGO_SETTINGS_MODULE=config.settings
 
 EXPOSE 8000
 
-# Strictly optional, but I like it for introspection of what I've built.
-RUN <<EOT
-python -V
-python -Im site
-find /app -not \( -path '*/.venv/*' -o -path '/app/lib/*' \)
-# set so that manage.py will be working
-dotenv-rust --file .env.dockertest python manage.py check
-rm .env.dockertest
-EOT
-
 # To develop _in_ this dockerfile:
 # build this image: docker build --target dev -t seattle-2025:dev .
 # run it: docker run --rm -it --env-file .env --env-file .env.docker --network seattle-2025_default --name nomnom-dev seattle-2025:dev
@@ -165,6 +157,17 @@ apt-get install -qyy \
 EOT
 
 USER app
+
+COPY .env.dockertest /app/
+# Strictly optional, but I like it for introspection of what I've built.
+RUN <<EOT
+python -V
+python -Im site
+find /app -not \( -path '*/.venv/*' -o -path '/app/lib/*' \)
+# set so that manage.py will be working
+dotenv-rust --file .env.dockertest python manage.py check
+rm .env.dockertest
+EOT
 
 CMD ["/app/docker/start.sh", "server"]
 # The real, deployable image is `run` above, but we want it to also be the default.
