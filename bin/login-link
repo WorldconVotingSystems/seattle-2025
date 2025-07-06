@@ -31,7 +31,8 @@ keys = {
 @click.option("--days", default=1)
 @click.option("--rights", default="hugo_nominate,hugo_vote")
 @click.option("--newperid", default=None)
-def main(base_url, perid, first_name, last_name, email, days, rights, newperid):
+@click.option("--key", default=None)
+def main(base_url, perid, first_name, last_name, email, days, rights, newperid, key):
     user_record = {
         "exp": (datetime.now(timezone.utc) + timedelta(days=days)).timestamp(),
         "email": email,
@@ -45,7 +46,8 @@ def main(base_url, perid, first_name, last_name, email, days, rights, newperid):
         "rights": rights,
     }
 
-    key = keys.get(base_url, os.environ["NOM_CONTROLL_JWT_KEY"])
+    if key is None:
+        key = keys.get(base_url, os.environ["NOM_CONTROLL_JWT_KEY"])
 
     token = jwt.encode(user_record, key, algorithm="HS512")
 
