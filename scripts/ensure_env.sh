@@ -8,6 +8,7 @@ fi
 SECRET_KEY=$(head -c 16 /dev/urandom | base64 | tr -dc 'a-zA-Z0-9')
 DB_PASSWORD=$(head -c 16 /dev/urandom | base64 | tr -dc 'a-zA-Z0-9')
 FLOWER_PASSWORD=$(head -c 16 /dev/urandom | base64 | tr -dc 'a-zA-Z0-9')
+JWT_KEY=$(head -c 32 /dev/urandom | base64 | tr -dc 'a-zA-Z0-9')
 
 cat <<EOF >>.env
 # During development, you may not have OAuth; this allows usernames
@@ -26,10 +27,11 @@ NOM_ALLOWED_HOSTS=127.0.0.1,localhost
 
 NOM_OAUTH_KEY=bogon
 NOM_OAUTH_SECRET=bogon
-NOM_OAUTH_BACKEND=nom.oauth2_backends.DummyOAuth2Backend
 
 NOM_EMAIL_HOST=localhost
 NOM_EMAIL_PORT=51025
+
+NOM_CONTROLL_JWT_KEY=$JWT_KEY
 
 CELERY_FLOWER_USER=flower
 CELERY_FLOWER_PASSWORD="$FLOWER_PASSWORD"
