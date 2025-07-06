@@ -71,12 +71,15 @@ INSTALLED_APPS = [
     # debug helper
     "django_extensions",
     "django_browser_reload",
+    "debug_toolbar",
     # to render markdown to HTML in templates
     "markdownify.apps.MarkdownifyConfig",
     # OAuth login
     "social_django",
     # Admin filtering enhancements
     "admin_auto_filters",
+    # Admin forms
+    "django_admin_action_forms",
     # Admin audit logging
     "logentry_admin",
     # Theming
@@ -98,6 +101,8 @@ INSTALLED_APPS = [
     "nomnom.advise",
     # The hugo packet app
     "nomnom.hugopacket",
+    # EPH and Canonicalization
+    "nomnom.canonicalize",
 ]
 
 SITE_ID = 1
@@ -115,6 +120,7 @@ AUTHENTICATION_BACKENDS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -165,6 +171,7 @@ DATABASES = {
         "PASSWORD": cfg.db.password,
         "HOST": cfg.db.host,
         "PORT": str(cfg.db.port),
+        "DISABLE_SERVER_SIDE_CURSORS": True,
     }
 }
 
@@ -172,6 +179,9 @@ DATABASES = {
 if not DEBUG:
     CONN_HEALTH_CHECKS = True
     CONN_MAX_AGE = 600
+
+HUGOPACKET_AWS_REGION = "sfo3"
+HUGOPACKET_AWS_USE_CDN = True
 
 CACHES = {
     "default": {
@@ -294,10 +304,16 @@ MARKDOWNIFY = {
     "admin-label": {
         # no block-level elements
         "WHITELIST_TAGS": bleach.sanitizer.ALLOWED_TAGS
-        | {"span"} - {"blockquote", "ol", "li", "ul"},
+        | {"span"} - {"blockquote", "ol", "li", "ul"}
+        | {"s"},
         "WHITELIST_ATTRS": ADMIN_MANAGED_ATTRIBUTES,
     },
 }
+
+MARKDOWN_EXTENSIONS = [
+    "pymdownx.tilde",
+]
+
 
 BOOTSTRAP5 = {
     "field_renderers": {
@@ -379,6 +395,11 @@ if cfg.debug:
     import icecream
 
     icecream.install()
+
+if cfg.debug:
+    INTERNAL_IPS = [
+        "127.0.0.1",
+    ]
 
 # Seed data can come from here:
 FIXTURE_DIRS = [BASE_DIR / "seed"]

@@ -1,6 +1,6 @@
 name: "seattle-2025"
 x-image: &image
-  image: ${NOMNOM_IMAGE:-ghcr.io/worldconvotingsystems/seattle-2025}:${NOMNOM_VERSION:-main}
+  image: ghcr.io/worldconvotingsystems/seattle-2025:${NOMNOM_VERSION:-main}
 x-boot: &boot
   depends_on:
     boot:
@@ -9,7 +9,7 @@ x-redis: &redis
   NOM_REDIS_HOST: redis
   NOM_REDIS_PORT: 6379
 x-db: &db
-  NOM_DB_HOST: db
+  NOM_DB_HOST: pgbouncer
   NOM_DB_PORT: 5432
   NOM_DB_NAME: $NOM_DB_NAME
   NOM_DB_USER: $NOM_DB_USER
@@ -22,11 +22,12 @@ services:
     <<: [*image, *boot]
     volumes:
       - staticfiles:/staticfiles
+      - ./local/:/data
     ports:
       - "127.0.0.1:8000:8000"
     command: bash /app/docker/start.sh server
     links:
-      - db
+      - pgbouncer
       - redis
     env_file:
       - .env
@@ -43,12 +44,23 @@ services:
           "CMD",
           "/bin/bash",
           "-c",
-          "set -o pipefail; curl -s --fail -H 'Host: nomnom-staging.seattlein2025.org' http://localhost:8000/watchman/ | jq --exit-status '.databases[].default.ok == true' > /dev/null",
+          "set -o pipefail; curl -s --fail -H 'Host: nomnom.seattlein2025.org' http://localhost:8000/watchman/ | jq --exit-status '.databases[].default.ok == true' > /dev/null",
         ]
 
   worker:
     <<: [*image, *boot]
     command: /app/docker/start.sh worker
+    links:
+      - pgbouncer
+      - redis
+    env_file:
+      - .env
+    environment:
+      <<: [*db, *redis, *staticfiles]
+
+  scheduler:
+    <<: [*image, *boot]
+    command: /app/docker/start.sh beat
     links:
       - db
       - redis
@@ -56,6 +68,9 @@ services:
       - .env
     environment:
       <<: [*db, *redis, *staticfiles]
+    volumes:
+      - staticfiles:/staticfiles:ro
+      - /local/:/data
 
   boot:
     <<: *image
@@ -67,12 +82,28 @@ services:
       - .env
     volumes:
       - staticfiles:/staticfiles
+      - ./local/:/data
     depends_on:
+      pgbouncer:
+        condition: service_healthy
       db:
         condition: service_healthy
     links:
+      - pgbouncer
       - db
       - redis
+
+  pgbouncer:
+    image: edoburu/pgbouncer
+    restart: always
+    volumes:
+      - ./pgbouncer:/etc/pgbouncer:ro
+    ports:
+      - 5432
+    environment:
+      - POSTGRES_PASSWORD=${NOM_DB_PASSWORD}
+    healthcheck:
+      test: ["CMD", "pg_isready", "-h", "localhost"]
 
   db:
     image: postgres:17.1
@@ -106,7 +137,7 @@ services:
   # This container and Dozzle provide a logging endpoint access over my personal tailnet,
   # so that I can view the container logs on this host without ssh as needed.
   tailscale-sidecar:
-    hostname: ${LOGGING_HOSTNAME:-nomnom-seattle2025-staging-logs}
+    hostname: nomnom-seattle2025-prod-logs
     volumes:
       - tailscale-data:/var/lib/tailscale
     devices:
@@ -116,8 +147,6 @@ services:
       - sys_module
     environment:
       - TS_SERVE_PORT=8080
-    env_file:
-      - .env
     image: ghcr.io/offbyone/sidecar:main
 
   dozzle:
@@ -126,7 +155,7 @@ services:
     network_mode: "service:tailscale-sidecar"
     restart: unless-stopped
     environment:
-      DOZZLE_HOSTNAME: "nomnom-seattle2025-staging-logs"
+      DOZZLE_HOSTNAME: "nomnom-seattle2025-prod-logs"
       DOZZLE_AUTH_PROVIDER: forward-proxy
       DOZZLE_AUTH_HEADER_USER: "Tailscale-User-Login"
       DOZZLE_AUTH_HEADER_NAME: "Tailscale-User-Name"
